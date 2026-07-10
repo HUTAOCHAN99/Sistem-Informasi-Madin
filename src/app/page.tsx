@@ -1,22 +1,27 @@
-import Link from "next/link";
+import Topbar from "@/components/public/Topbar";
+import Navbar from "@/components/public/Navbar";
+import Hero from "@/components/public/Hero";
+import Features from "@/components/public/Features";
+import About from "@/components/public/About";
+import RoleShowcase from "@/components/public/RoleShowcase";
+import StatsBand from "@/components/public/StatsBand";
+import Programs from "@/components/public/Programs";
+import CTA from "@/components/public/CTA";
+import Footer from "@/components/public/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="font-display text-2xl font-semibold text-madin-navy">
-          Sistem Informasi Madrasah Diniyah
-        </h1>
-        <p className="text-black/50 mt-2 text-sm">
-          Halaman publik (Beranda, Profil, dll) belum dibuat — ini kerangka dashboard dulu.
-        </p>
-        <Link
-          href="/dashboard"
-          className="inline-block mt-6 bg-madin-orange text-madin-navy font-medium px-5 py-2.5 rounded-lg hover:bg-madin-orangeDark hover:text-white transition-colors"
-        >
-          Buka Dashboard →
-        </Link>
-      </div>
+    <main className="min-h-screen bg-white overflow-x-hidden">
+      <Topbar />
+      <Navbar />
+      <Hero />
+      <Features />
+      <About />
+      <RoleShowcase />
+      <StatsBand />
+      <Programs />
+      <CTA />
+      <Footer />
     </main>
   );
 }
