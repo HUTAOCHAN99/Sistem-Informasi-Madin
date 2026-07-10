@@ -1,26 +1,30 @@
-import Topbar from "@/components/public/Topbar";
-import Navbar from "@/components/public/Navbar";
-import Hero from "@/components/public/Hero";
-import Features from "@/components/public/Features";
-import About from "@/components/public/About";
-import RoleShowcase from "@/components/public/RoleShowcase";
-import StatsBand from "@/components/public/StatsBand";
-import Programs from "@/components/public/Programs";
-import CTA from "@/components/public/CTA";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/landing/Navbar";
+import Hero from "@/components/landing/Hero";
+import About from "@/components/landing/About";
+import Stats from "@/components/landing/Stats";
+import EducationLevels from "@/components/landing/EducationLevels";
+import Programs from "@/components/landing/Programs";
+import Schedule from "@/components/landing/Schedule";
+import Announcements from "@/components/landing/Announcements";
+import Gallery from "@/components/landing/Gallery";
+import Teachers from "@/components/landing/Teachers";
+import Location from "@/components/landing/Location";
+import Footer from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white overflow-x-hidden">
-      <Topbar />
+    <main className="min-h-screen">
       <Navbar />
       <Hero />
-      <Features />
       <About />
-      <RoleShowcase />
-      <StatsBand />
+      <Stats />
+      <EducationLevels />
       <Programs />
-      <CTA />
+      <Schedule />
+      <Announcements />
+      <Gallery />
+      <Teachers />
+      <Location />
       <Footer />
     </main>
   );
