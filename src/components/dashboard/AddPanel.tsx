@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function AddPanel({
   label,
@@ -11,7 +11,6 @@ export default function AddPanel({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
-  const formWrapperRef = useRef<HTMLDivElement>(null);
 
   return (
     <div>
@@ -24,16 +23,7 @@ export default function AddPanel({
       </button>
 
       {open && (
-        <div
-          ref={formWrapperRef}
-          className="mt-4 bg-white rounded-xl2 border border-madin-line p-5"
-          onSubmitCapture={() => {
-            // Form di dalam akan menutup panel setelah submit berhasil
-            // (halaman ter-revalidate lewat server action, jadi cukup
-            // tutup UI-nya di sini).
-            setOpen(false);
-          }}
-        >
+        <div className="mt-4 bg-white rounded-xl2 border border-madin-line p-5">
           {children}
         </div>
       )}
