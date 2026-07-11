@@ -1,5 +1,5 @@
 import { Megaphone } from "lucide-react";
-import { announcements } from "@/lib/dummy-data";
+import type { Announcement } from "@/lib/types";
 
 function formatTanggal(iso: string) {
   return new Date(iso).toLocaleDateString("id-ID", {
@@ -9,7 +9,7 @@ function formatTanggal(iso: string) {
   });
 }
 
-export default function Announcements() {
+export default function Announcements({ announcements }: { announcements: Announcement[] }) {
   return (
     <section id="pengumuman" className="bg-white py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">
@@ -38,6 +38,9 @@ export default function Announcements() {
               <p className="text-black/55 text-sm leading-relaxed mt-2">{a.isi}</p>
             </div>
           ))}
+          {announcements.length === 0 && (
+            <p className="text-sm text-black/40">Belum ada pengumuman.</p>
+          )}
         </div>
       </div>
     </section>

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import About from "@/components/landing/About";
@@ -10,20 +12,50 @@ import Gallery from "@/components/landing/Gallery";
 import Teachers from "@/components/landing/Teachers";
 import Location from "@/components/landing/Location";
 import Footer from "@/components/landing/Footer";
+import { getDashboardStats } from "@/lib/data/stats";
+import { getAnnouncements } from "@/lib/data/announcements";
+import { getSchedule } from "@/lib/data/schedule";
+import { getTeachers } from "@/lib/data/teachers";
+import { isSupabaseConfigured } from "@/lib/supabase/server";
 
-export default function Home() {
+// Kalau env Supabase belum diisi, tampilkan halaman tetap jalan dengan data
+// kosong (bukan crash) — supaya halaman publik tidak ikut error kalau baru
+// setup project.
+async function safeLoad() {
+  if (!isSupabaseConfigured()) {
+    return {
+      stats: { totalGuru: 0, totalSantri: 0, totalKelas: 0, pengumumanAktif: 0, jadwalHariIni: 0 },
+      announcements: [],
+      schedule: [],
+      teachers: [],
+    };
+  }
+
+  const [stats, announcements, schedule, teachers] = await Promise.all([
+    getDashboardStats(),
+    getAnnouncements(),
+    getSchedule(),
+    getTeachers(),
+  ]);
+
+  return { stats, announcements, schedule, teachers };
+}
+
+export default async function Home() {
+  const { stats, announcements, schedule, teachers } = await safeLoad();
+
   return (
     <main className="min-h-screen">
       <Navbar />
       <Hero />
       <About />
-      <Stats />
+      <Stats stats={stats} />
       <EducationLevels />
       <Programs />
-      <Schedule />
-      <Announcements />
+      <Schedule schedule={schedule} />
+      <Announcements announcements={announcements.slice(0, 3)} />
       <Gallery />
-      <Teachers />
+      <Teachers teachers={teachers} />
       <Location />
       <Footer />
     </main>

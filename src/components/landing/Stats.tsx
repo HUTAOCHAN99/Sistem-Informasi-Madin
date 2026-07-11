@@ -1,14 +1,14 @@
 import { GraduationCap, Users, School, CalendarCheck } from "lucide-react";
-import { dashboardStats } from "@/lib/dummy-data";
+import type { DashboardStats } from "@/lib/types";
 
-const ITEMS = [
-  { icon: Users, value: dashboardStats.totalSantri, label: "Santri Aktif" },
-  { icon: GraduationCap, value: dashboardStats.totalGuru, label: "Pengajar" },
-  { icon: School, value: dashboardStats.totalKelas, label: "Kelas Berjalan" },
-  { icon: CalendarCheck, value: dashboardStats.jadwalHariIni, label: "Jadwal Hari Ini" },
-];
+export default function Stats({ stats }: { stats: DashboardStats }) {
+  const ITEMS = [
+    { icon: Users, value: stats.totalSantri, label: "Santri Aktif" },
+    { icon: GraduationCap, value: stats.totalGuru, label: "Pengajar" },
+    { icon: School, value: stats.totalKelas, label: "Kelas Berjalan" },
+    { icon: CalendarCheck, value: stats.jadwalHariIni, label: "Jadwal Hari Ini" },
+  ];
 
-export default function Stats() {
   return (
     <section id="statistik" className="bg-white py-16 border-y border-madin-line">
       <div className="max-w-6xl mx-auto px-5">

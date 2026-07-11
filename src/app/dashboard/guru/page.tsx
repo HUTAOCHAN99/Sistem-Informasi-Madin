@@ -1,24 +1,42 @@
+export const dynamic = "force-dynamic";
+
 import Topbar from "@/components/dashboard/Topbar";
 import DataTable, { Column } from "@/components/dashboard/DataTable";
-import { teachers, Teacher } from "@/lib/dummy-data";
-import { Plus } from "lucide-react";
+import DeleteButton from "@/components/dashboard/DeleteButton";
+import AddPanel from "@/components/dashboard/AddPanel";
+import AddTeacherForm from "@/components/dashboard/forms/AddTeacherForm";
+import { getTeachers } from "@/lib/data/teachers";
+import { deleteTeacher } from "@/lib/actions/teachers";
+import type { Teacher } from "@/lib/types";
 
-const columns: Column<Teacher>[] = [
-  { key: "nama", header: "Nama" },
-  { key: "mapel", header: "Mata Pelajaran" },
-  { key: "hp", header: "No HP" },
-];
+export default async function GuruPage() {
+  const teachers = await getTeachers();
 
-export default function GuruPage() {
+  const columns: Column<Teacher>[] = [
+    { key: "nama", header: "Nama" },
+    { key: "mapel", header: "Mata Pelajaran" },
+    { key: "hp", header: "No HP" },
+    {
+      key: "id",
+      header: "Aksi",
+      render: (row) => (
+        <DeleteButton
+          action={deleteTeacher.bind(null, row.id)}
+          confirmText={`Hapus data guru "${row.nama}"?`}
+        />
+      ),
+    },
+  ];
+
   return (
     <>
       <Topbar title="Data Guru" />
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm text-black/50">{teachers.length} guru terdaftar</p>
-          <button className="flex items-center gap-2 bg-madin-orange text-madin-navy text-sm font-medium px-4 py-2 rounded-lg hover:bg-madin-orangeDark hover:text-white transition-colors">
-            <Plus className="w-4 h-4" /> Tambah Guru
-          </button>
+          <AddPanel label="Tambah Guru">
+            <AddTeacherForm />
+          </AddPanel>
         </div>
         <DataTable columns={columns} rows={teachers} />
       </div>

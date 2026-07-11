@@ -1,7 +1,7 @@
 import { Clock } from "lucide-react";
-import { schedule } from "@/lib/dummy-data";
+import type { ScheduleItem } from "@/lib/types";
 
-export default function Schedule() {
+export default function Schedule({ schedule }: { schedule: ScheduleItem[] }) {
   return (
     <section id="jadwal" className="bg-madin-cream py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">
@@ -42,6 +42,9 @@ export default function Schedule() {
               <div className="px-4 py-3.5 text-black/60 hidden sm:block">{s.kelas}</div>
             </div>
           ))}
+          {schedule.length === 0 && (
+            <p className="px-4 py-6 text-sm text-black/40">Jadwal belum tersedia.</p>
+          )}
         </div>
       </div>
     </section>

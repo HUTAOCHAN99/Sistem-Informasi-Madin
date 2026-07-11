@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { teachers } from "@/lib/dummy-data";
+import type { Teacher } from "@/lib/types";
 
 function initials(name: string) {
   const parts = name.replace(/^(Ust\.|Usth\.)\s*/i, "").split(" ");
@@ -38,7 +38,7 @@ function TeacherAvatar({ id, nama }: { id: string; nama: string }) {
   );
 }
 
-export default function Teachers() {
+export default function Teachers({ teachers }: { teachers: Teacher[] }) {
   return (
     <section id="guru" className="bg-white py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">

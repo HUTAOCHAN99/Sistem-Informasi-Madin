@@ -2,6 +2,13 @@ export type Column<T> = {
   key: keyof T;
   header: string;
   render?: (row: T) => React.ReactNode;
+  /**
+   * Pengenal unik kolom, dipakai sebagai React key. Wajib diisi kalau ada
+   * lebih dari satu kolom yang memakai `key` yang sama (mis. dua kolom
+   * turunan/aksi yang sama-sama memakai `id` hanya untuk akses row.id).
+   * Default-nya String(key).
+   */
+  id?: string;
 };
 
 export default function DataTable<T extends { id: string }>({
@@ -17,7 +24,7 @@ export default function DataTable<T extends { id: string }>({
         <thead>
           <tr className="bg-madin-cream text-left text-black/50 text-xs uppercase tracking-wide">
             {columns.map((col) => (
-              <th key={String(col.key)} className="px-5 py-3 font-medium">
+              <th key={col.id ?? String(col.key)} className="px-5 py-3 font-medium">
                 {col.header}
               </th>
             ))}
@@ -30,7 +37,7 @@ export default function DataTable<T extends { id: string }>({
               className={`border-t border-madin-line ${i % 2 === 1 ? "bg-madin-cream/40" : ""}`}
             >
               {columns.map((col) => (
-                <td key={String(col.key)} className="px-5 py-3 text-madin-navy/90">
+                <td key={col.id ?? String(col.key)} className="px-5 py-3 text-madin-navy/90">
                   {col.render ? col.render(row) : String(row[col.key])}
                 </td>
               ))}
