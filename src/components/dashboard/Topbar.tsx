@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Bell, Search, LogOut, ChevronDown } from "lucide-react";
 
 export default function Topbar({ title }: { title: string }) {
-  const router = useRouter();
   const [email, setEmail] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -29,8 +27,17 @@ export default function Topbar({ title }: { title: string }) {
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
+    // Sengaja pakai full page reload (bukan router.push + router.refresh).
+    // router.push() cuma soft-navigation dan tidak membersihkan Next.js
+    // Client-side Router Cache milik route lain (mis. /dashboard) yang
+    // sudah sempat dikunjungi sebelum logout. Kalau tetap pakai
+    // router.push, klik balik ke /dashboard dalam ~30 detik bisa
+    // menyajikan versi ter-cache di browser tanpa request baru ke server
+    // — sehingga middleware.ts (yang mengecek cookie sesi) tidak sempat
+    // jalan, dan kelihatan seperti masih login padahal cookie-nya sudah
+    // kehapus. window.location memaksa reload penuh, jadi cache lama
+    // ikut dibuang dan request berikutnya pasti lewat middleware.
+    window.location.href = "/login";
   }
 
   return (

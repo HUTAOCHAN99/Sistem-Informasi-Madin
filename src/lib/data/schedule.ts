@@ -40,7 +40,24 @@ export async function getSchedule(): Promise<ScheduleItem[]> {
 
 /** Nama hari ini dalam Bahasa Indonesia, dipakai untuk kartu "Jadwal Hari Ini". */
 export function namaHariIni(): Hari {
-  const idx = new Date().getDay(); // 0 = Minggu ... 6 = Sabtu
-  const map: Hari[] = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  return map[idx];
+  // Pakai timezone Asia/Jakarta secara eksplisit, bukan timezone server.
+  // Kalau di-deploy di server dengan timezone UTC, new Date().getDay() bisa
+  // salah hari untuk jam-jam dini hari WIB (00:00–06:59 WIB = masih hari
+  // sebelumnya di UTC), sehingga "Jadwal Hari Ini" jadi 0 padahal ada jadwal.
+  const hariEn = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Jakarta",
+    weekday: "long",
+  }).format(new Date());
+
+  const map: Record<string, Hari> = {
+    Sunday: "Minggu",
+    Monday: "Senin",
+    Tuesday: "Selasa",
+    Wednesday: "Rabu",
+    Thursday: "Kamis",
+    Friday: "Jumat",
+    Saturday: "Sabtu",
+  };
+
+  return map[hariEn];
 }

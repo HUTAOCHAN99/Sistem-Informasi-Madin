@@ -8,7 +8,8 @@ import {
 } from "@/lib/auth/session";
 
 const REASON_MESSAGE: Record<string, string> = {
-  not_found: "Sesi OTP tidak ditemukan atau sudah kedaluwarsa. Silakan login ulang.",
+  not_found:
+    "Sesi OTP tidak ditemukan atau sudah kedaluwarsa. Silakan login ulang.",
   expired: "Kode OTP sudah kedaluwarsa. Silakan minta kode baru.",
   too_many_attempts: "Terlalu banyak percobaan salah. Silakan login ulang.",
   invalid_code: "Kode OTP salah. Coba lagi.",
@@ -22,14 +23,14 @@ export async function POST(req: NextRequest) {
   if (!pendingId) {
     return NextResponse.json(
       { ok: false, message: REASON_MESSAGE.not_found },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (!/^\d{5}$/.test(code)) {
     return NextResponse.json(
       { ok: false, message: "Kode OTP harus 5 digit angka." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
   if (!result.ok) {
     return NextResponse.json(
       { ok: false, message: REASON_MESSAGE[result.reason] },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
     path: "/",
     maxAge: SESSION_MAX_AGE_SECONDS,
   });
-  res.cookies.delete(PENDING_COOKIE);
+  res.cookies.set(PENDING_COOKIE, "", { path: "/", maxAge: 0 });
 
   return res;
 }
