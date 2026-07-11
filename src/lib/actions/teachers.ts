@@ -18,6 +18,7 @@ export async function createTeacher(formData: FormData) {
   revalidatePath("/dashboard/kelas");
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
 
 export async function deleteTeacher(id: string) {
@@ -29,4 +30,5 @@ export async function deleteTeacher(id: string) {
   revalidatePath("/dashboard/kelas");
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }

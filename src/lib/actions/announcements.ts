@@ -19,6 +19,7 @@ export async function createAnnouncement(formData: FormData) {
 
   revalidatePath("/dashboard/pengumuman");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
 
 export async function deleteAnnouncement(id: string) {
@@ -28,4 +29,5 @@ export async function deleteAnnouncement(id: string) {
 
   revalidatePath("/dashboard/pengumuman");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }

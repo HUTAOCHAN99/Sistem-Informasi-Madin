@@ -24,6 +24,7 @@ export async function createSchedule(formData: FormData) {
 
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
 
 export async function deleteSchedule(id: string) {
@@ -33,4 +34,5 @@ export async function deleteSchedule(id: string) {
 
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }

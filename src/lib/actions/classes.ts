@@ -23,6 +23,7 @@ export async function createClass(formData: FormData) {
   revalidatePath("/dashboard/santri");
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
 
 export async function deleteClass(id: string) {
@@ -34,4 +35,5 @@ export async function deleteClass(id: string) {
   revalidatePath("/dashboard/santri");
   revalidatePath("/dashboard/jadwal");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }

@@ -30,6 +30,7 @@ export async function createStudent(formData: FormData) {
   revalidatePath("/dashboard/absensi");
   revalidatePath("/dashboard/nilai");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
 
 export async function deleteStudent(id: string) {
@@ -42,4 +43,5 @@ export async function deleteStudent(id: string) {
   revalidatePath("/dashboard/absensi");
   revalidatePath("/dashboard/nilai");
   revalidatePath("/dashboard");
+  revalidatePath("/");
 }
