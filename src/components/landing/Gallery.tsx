@@ -1,10 +1,20 @@
+"use client";
+
+import { useState } from "react";
+
+// Cara pakai:
+// 1. Taruh file foto di folder /public/gallery/ dengan nama persis seperti di bawah
+//    (misalnya public/gallery/mengaji.jpg).
+// 2. Ganti teks "caption" jika perlu — itu yang tampil di bawah foto.
+// 3. Kalau file belum ada / nama tidak cocok, tile otomatis kembali ke
+//    tampilan placeholder warna supaya layout tidak rusak.
 const TILES = [
-  { caption: "Kegiatan mengaji sore", tone: "bg-madin-navy" },
-  { caption: "Praktik ibadah bersama", tone: "bg-madin-teal" },
-  { caption: "Suasana kelas Awaliyah", tone: "bg-madin-orange" },
-  { caption: "Kajian akhlak santri", tone: "bg-madin-navySoft" },
-  { caption: "Wisuda santri Ulya", tone: "bg-madin-teal" },
-  { caption: "Kegiatan hari besar Islam", tone: "bg-madin-navy" },
+  { file: "mengaji.jpg", caption: "Kegiatan mengaji sore", tone: "bg-madin-navy" },
+  { file: "ibadah.jpg", caption: "Praktik ibadah bersama", tone: "bg-madin-teal" },
+  { file: "kelas-awaliyah.jpg", caption: "Suasana kelas Awaliyah", tone: "bg-madin-orange" },
+  { file: "kajian-akhlak.jpg", caption: "Kajian akhlak santri", tone: "bg-madin-navySoft" },
+  { file: "wisuda.jpg", caption: "Wisuda santri Ulya", tone: "bg-madin-teal" },
+  { file: "hari-besar.jpg", caption: "Kegiatan hari besar Islam", tone: "bg-madin-navy" },
 ];
 
 function Motif() {
@@ -16,6 +26,33 @@ function Motif() {
         strokeWidth="1.5"
       />
     </svg>
+  );
+}
+
+function GalleryTile({ file, caption, tone }: (typeof TILES)[number]) {
+  const [broken, setBroken] = useState(false);
+  const src = `/gallery/${file}`;
+
+  return (
+    <div className="relative aspect-[4/3] rounded-xl2 overflow-hidden group">
+      {!broken ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={caption}
+          onError={() => setBroken(true)}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className={`w-full h-full ${tone} flex items-center justify-center`}>
+          <Motif />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
+      <span className="absolute bottom-4 left-4 right-4 text-white text-sm font-display font-medium">
+        {caption}
+      </span>
+    </div>
   );
 }
 
@@ -31,20 +68,12 @@ export default function Gallery() {
         </h2>
         <p className="text-black/50 text-sm mt-3 max-w-xl">
           Foto kegiatan akan segera diperbarui — ruang di bawah ini menampilkan
-          gambaran sementara.
+          gambaran sementara sampai foto asli ditambahkan.
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
           {TILES.map((t) => (
-            <div
-              key={t.caption}
-              className={`relative aspect-[4/3] rounded-xl2 ${t.tone} flex items-center justify-center overflow-hidden`}
-            >
-              <Motif />
-              <span className="absolute bottom-4 left-4 right-4 text-white text-sm font-display font-medium">
-                {t.caption}
-              </span>
-            </div>
+            <GalleryTile key={t.file} file={t.file} caption={t.caption} tone={t.tone} />
           ))}
         </div>
       </div>

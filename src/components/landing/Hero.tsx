@@ -1,4 +1,38 @@
+"use client";
+
+import { useState } from "react";
 import { BookOpen, Sparkles } from "lucide-react";
+
+// Cara pakai: taruh foto di /public/hero/madrasah.jpg (foto gedung atau
+// suasana belajar). Kalau file belum ada, otomatis kembali ke motif
+// geometris seperti sekarang.
+function HeroPhoto() {
+  const [broken, setBroken] = useState(false);
+
+  if (broken) {
+    return (
+      <div className="w-full aspect-[4/3] bg-madin-navy flex items-center justify-center">
+        <svg viewBox="0 0 200 200" className="w-28 h-28 opacity-20" fill="none">
+          <path
+            d="M100 10 L118 82 L190 100 L118 118 L100 190 L82 118 L10 100 L82 82 Z"
+            stroke="white"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </div>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/hero/madrasah.jpg"
+      alt="Suasana Madrasah Diniyah"
+      onError={() => setBroken(true)}
+      className="w-full aspect-[4/3] object-cover"
+    />
+  );
+}
 
 export default function Hero() {
   return (
@@ -58,27 +92,30 @@ export default function Hero() {
         </div>
 
         <div className="relative">
-          <div className="rounded-xl2 bg-madin-navySoft border border-white/10 p-6 sm:p-8">
-            <p className="font-display text-white/90 text-lg sm:text-xl leading-snug">
-              &ldquo;Sebaik-baik kalian adalah yang mempelajari Al-Qur&apos;an dan
-              mengajarkannya.&rdquo;
-            </p>
-            <p className="text-madin-orange text-xs font-semibold tracking-wide uppercase mt-4">
-              HR. Bukhari
-            </p>
-            <div className="h-px bg-white/10 my-6" />
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="font-display font-bold text-white text-2xl">3</p>
-                <p className="text-white/50 text-xs mt-1">Jenjang</p>
-              </div>
-              <div>
-                <p className="font-display font-bold text-white text-2xl">5</p>
-                <p className="text-white/50 text-xs mt-1">Mata Pelajaran</p>
-              </div>
-              <div>
-                <p className="font-display font-bold text-white text-2xl">6</p>
-                <p className="text-white/50 text-xs mt-1">Hari Belajar</p>
+          <div className="rounded-xl2 bg-madin-navySoft border border-white/10 overflow-hidden">
+            <HeroPhoto />
+            <div className="p-6 sm:p-8">
+              <p className="font-display text-white/90 text-lg sm:text-xl leading-snug">
+                &ldquo;Sebaik-baik kalian adalah yang mempelajari Al-Qur&apos;an dan
+                mengajarkannya.&rdquo;
+              </p>
+              <p className="text-madin-orange text-xs font-semibold tracking-wide uppercase mt-4">
+                HR. Bukhari
+              </p>
+              <div className="h-px bg-white/10 my-6" />
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <p className="font-display font-bold text-white text-2xl">3</p>
+                  <p className="text-white/50 text-xs mt-1">Jenjang</p>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-white text-2xl">5</p>
+                  <p className="text-white/50 text-xs mt-1">Mata Pelajaran</p>
+                </div>
+                <div>
+                  <p className="font-display font-bold text-white text-2xl">6</p>
+                  <p className="text-white/50 text-xs mt-1">Hari Belajar</p>
+                </div>
               </div>
             </div>
           </div>

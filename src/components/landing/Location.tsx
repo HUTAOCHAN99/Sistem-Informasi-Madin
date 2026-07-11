@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { MapPin, Phone, Clock3 } from "lucide-react";
 
 const INFO = [
@@ -18,6 +21,25 @@ const INFO = [
   },
 ];
 
+// Cara pakai: taruh foto gedung/gerbang di /public/lokasi/gedung.jpg.
+// Kalau file belum ada, kartu foto ini otomatis disembunyikan dan
+// tata letak kembali seperti semula (info + peta saja).
+function BuildingPhoto() {
+  const [broken, setBroken] = useState(false);
+
+  if (broken) return null;
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/lokasi/gedung.jpg"
+      alt="Gedung Madrasah Diniyah"
+      onError={() => setBroken(true)}
+      className="w-full h-40 object-cover rounded-xl2 border border-madin-line"
+    />
+  );
+}
+
 export default function Location() {
   return (
     <section id="lokasi" className="bg-madin-cream py-20 sm:py-24">
@@ -31,6 +53,7 @@ export default function Location() {
 
         <div className="grid lg:grid-cols-[1fr_1.2fr] gap-6 mt-10">
           <div className="space-y-4">
+            <BuildingPhoto />
             {INFO.map((item) => (
               <div
                 key={item.label}
