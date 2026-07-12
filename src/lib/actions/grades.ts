@@ -28,6 +28,26 @@ export async function createGrade(formData: FormData) {
   revalidatePath("/dashboard/nilai");
 }
 
+export async function updateGrade(id: string, formData: FormData) {
+  const siswa_id = String(formData.get("siswa_id") ?? "").trim();
+  const mapel = String(formData.get("mapel") ?? "").trim();
+  const harian = toScore(formData.get("harian"));
+  const uts = toScore(formData.get("uts"));
+  const uas = toScore(formData.get("uas"));
+
+  if (!siswa_id) throw new Error("Santri wajib dipilih.");
+  if (!mapel) throw new Error("Mata pelajaran wajib diisi.");
+
+  const supabase = getSupabaseServer();
+  const { error } = await supabase
+    .from("grades")
+    .update({ siswa_id, mapel, harian, uts, uas })
+    .eq("id", id);
+  if (error) throw new Error(`Gagal memperbarui nilai: ${error.message}`);
+
+  revalidatePath("/dashboard/nilai");
+}
+
 export async function deleteGrade(id: string) {
   const supabase = getSupabaseServer();
   const { error } = await supabase.from("grades").delete().eq("id", id);

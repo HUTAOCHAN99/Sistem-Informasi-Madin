@@ -3,8 +3,10 @@ export const dynamic = "force-dynamic";
 import Topbar from "@/components/dashboard/Topbar";
 import DataTable, { Column } from "@/components/dashboard/DataTable";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddGradeForm from "@/components/dashboard/forms/AddGradeForm";
+import EditGradeForm from "@/components/dashboard/forms/EditGradeForm";
 import { getGrades } from "@/lib/data/grades";
 import { getStudentOptions } from "@/lib/data/students";
 import { deleteGrade } from "@/lib/actions/grades";
@@ -35,10 +37,15 @@ export default async function NilaiPage() {
       id: "aksi",
       header: "Aksi",
       render: (row) => (
-        <DeleteButton
-          action={deleteGrade.bind(null, row.id)}
-          confirmText={`Hapus nilai ${row.mapel} milik ${row.siswa}?`}
-        />
+        <div className="flex items-center gap-1">
+          <EditModal title={`Edit Nilai: ${row.siswa} - ${row.mapel}`}>
+            <EditGradeForm grade={row} studentOptions={studentOptions} />
+          </EditModal>
+          <DeleteButton
+            action={deleteGrade.bind(null, row.id)}
+            confirmText={`Hapus nilai ${row.mapel} milik ${row.siswa}?`}
+          />
+        </div>
       ),
     },
   ];

@@ -39,13 +39,23 @@ export async function getClasses(): Promise<StudentClass[]> {
   }));
 }
 
+const JENJANG_ORDER: Record<string, number> = { Awaliyah: 0, Wustha: 1, Ulya: 2 };
+
 export async function getClassOptions(): Promise<SelectOption[]> {
   const supabase = getSupabaseServer();
   const { data, error } = await supabase
     .from("classes")
-    .select("id, nama_kelas")
+    .select("id, nama_kelas, jenjang")
     .order("nama_kelas", { ascending: true });
 
   if (error) throw new Error(`Gagal memuat pilihan kelas: ${error.message}`);
-  return (data ?? []).map((c) => ({ id: c.id, label: c.nama_kelas }));
+
+  return (data ?? [])
+    .slice()
+    .sort(
+      (a, b) =>
+        (JENJANG_ORDER[a.jenjang] ?? 99) - (JENJANG_ORDER[b.jenjang] ?? 99) ||
+        a.nama_kelas.localeCompare(b.nama_kelas)
+    )
+    .map((c) => ({ id: c.id, label: `${c.nama_kelas} (${c.jenjang})` }));
 }

@@ -3,8 +3,10 @@ export const dynamic = "force-dynamic";
 import Topbar from "@/components/dashboard/Topbar";
 import DataTable, { Column } from "@/components/dashboard/DataTable";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddScheduleForm from "@/components/dashboard/forms/AddScheduleForm";
+import EditScheduleForm from "@/components/dashboard/forms/EditScheduleForm";
 import { getSchedule } from "@/lib/data/schedule";
 import { getTeacherOptions } from "@/lib/data/teachers";
 import { getClassOptions } from "@/lib/data/classes";
@@ -28,10 +30,19 @@ export default async function JadwalPage() {
       key: "id",
       header: "Aksi",
       render: (row) => (
-        <DeleteButton
-          action={deleteSchedule.bind(null, row.id)}
-          confirmText={`Hapus jadwal "${row.mapel}" (${row.hari}, ${row.jam})?`}
-        />
+        <div className="flex items-center gap-1">
+          <EditModal title={`Edit Jadwal: ${row.mapel}`}>
+            <EditScheduleForm
+              item={row}
+              teacherOptions={teacherOptions}
+              classOptions={classOptions}
+            />
+          </EditModal>
+          <DeleteButton
+            action={deleteSchedule.bind(null, row.id)}
+            confirmText={`Hapus jadwal "${row.mapel}" (${row.hari}, ${row.jam})?`}
+          />
+        </div>
       ),
     },
   ];

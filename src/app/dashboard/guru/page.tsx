@@ -3,8 +3,10 @@ export const dynamic = "force-dynamic";
 import Topbar from "@/components/dashboard/Topbar";
 import DataTable, { Column } from "@/components/dashboard/DataTable";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddTeacherForm from "@/components/dashboard/forms/AddTeacherForm";
+import EditTeacherForm from "@/components/dashboard/forms/EditTeacherForm";
 import EditTeacherPhotoForm from "@/components/dashboard/forms/EditTeacherPhotoForm";
 import { getTeachers } from "@/lib/data/teachers";
 import { deleteTeacher } from "@/lib/actions/teachers";
@@ -29,10 +31,15 @@ export default async function GuruPage() {
       key: "id",
       header: "Aksi",
       render: (row) => (
-        <DeleteButton
-          action={deleteTeacher.bind(null, row.id)}
-          confirmText={`Hapus data guru "${row.nama}"?`}
-        />
+        <div className="flex items-center gap-1">
+          <EditModal title={`Edit Guru: ${row.nama}`}>
+            <EditTeacherForm teacher={row} />
+          </EditModal>
+          <DeleteButton
+            action={deleteTeacher.bind(null, row.id)}
+            confirmText={`Hapus data guru "${row.nama}"?`}
+          />
+        </div>
       ),
     },
   ];

@@ -2,8 +2,10 @@ export const dynamic = "force-dynamic";
 
 import Topbar from "@/components/dashboard/Topbar";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddAnnouncementForm from "@/components/dashboard/forms/AddAnnouncementForm";
+import EditAnnouncementForm from "@/components/dashboard/forms/EditAnnouncementForm";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { deleteAnnouncement } from "@/lib/actions/announcements";
 import { Megaphone } from "lucide-react";
@@ -35,10 +37,15 @@ export default async function PengumumanPage() {
                 <p className="text-sm text-black/50 mt-1">{a.isi}</p>
                 <p className="text-xs text-madin-teal mt-2">{a.tanggal}</p>
               </div>
-              <DeleteButton
-                action={deleteAnnouncement.bind(null, a.id)}
-                confirmText={`Hapus pengumuman "${a.judul}"?`}
-              />
+              <div className="flex items-center gap-1 shrink-0">
+                <EditModal title={`Edit Pengumuman: ${a.judul}`}>
+                  <EditAnnouncementForm announcement={a} />
+                </EditModal>
+                <DeleteButton
+                  action={deleteAnnouncement.bind(null, a.id)}
+                  confirmText={`Hapus pengumuman "${a.judul}"?`}
+                />
+              </div>
             </div>
           ))}
           {announcements.length === 0 && (

@@ -2,8 +2,10 @@ export const dynamic = "force-dynamic";
 
 import Topbar from "@/components/dashboard/Topbar";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddClassForm from "@/components/dashboard/forms/AddClassForm";
+import EditClassForm from "@/components/dashboard/forms/EditClassForm";
 import { getClasses } from "@/lib/data/classes";
 import { getTeacherOptions } from "@/lib/data/teachers";
 import { deleteClass } from "@/lib/actions/classes";
@@ -42,10 +44,15 @@ export default async function KelasPage() {
                       <p className="text-xs text-black/50 mt-1">Wali kelas: {c.wali_kelas}</p>
                       <p className="text-xs text-madin-teal mt-2">{c.jumlah_santri} santri</p>
                     </div>
-                    <DeleteButton
-                      action={deleteClass.bind(null, c.id)}
-                      confirmText={`Hapus kelas "${c.nama_kelas}"? Santri di kelas ini tidak akan terhapus, hanya kehilangan kelasnya.`}
-                    />
+                    <div className="flex items-center gap-1 shrink-0">
+                      <EditModal title={`Edit Kelas: ${c.nama_kelas}`}>
+                        <EditClassForm studentClass={c} teacherOptions={teacherOptions} />
+                      </EditModal>
+                      <DeleteButton
+                        action={deleteClass.bind(null, c.id)}
+                        confirmText={`Hapus kelas "${c.nama_kelas}"? Santri di kelas ini tidak akan terhapus, hanya kehilangan kelasnya.`}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

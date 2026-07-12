@@ -27,6 +27,29 @@ export async function createSchedule(formData: FormData) {
   revalidatePath("/");
 }
 
+export async function updateSchedule(id: string, formData: FormData) {
+  const hari = String(formData.get("hari") ?? "").trim();
+  const jam = String(formData.get("jam") ?? "").trim();
+  const mapel = String(formData.get("mapel") ?? "").trim();
+  const guru_id = String(formData.get("guru_id") ?? "").trim() || null;
+  const kelas_id = String(formData.get("kelas_id") ?? "").trim() || null;
+
+  if (!HARI_VALID.includes(hari)) throw new Error("Hari tidak valid.");
+  if (!jam) throw new Error("Jam wajib diisi, contoh: 16.00 - 16.45");
+  if (!mapel) throw new Error("Mata pelajaran wajib diisi.");
+
+  const supabase = getSupabaseServer();
+  const { error } = await supabase
+    .from("schedule")
+    .update({ hari, jam, mapel, guru_id, kelas_id })
+    .eq("id", id);
+  if (error) throw new Error(`Gagal memperbarui jadwal: ${error.message}`);
+
+  revalidatePath("/dashboard/jadwal");
+  revalidatePath("/dashboard");
+  revalidatePath("/");
+}
+
 export async function deleteSchedule(id: string) {
   const supabase = getSupabaseServer();
   const { error } = await supabase.from("schedule").delete().eq("id", id);

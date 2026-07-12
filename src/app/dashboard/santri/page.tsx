@@ -3,8 +3,10 @@ export const dynamic = "force-dynamic";
 import Topbar from "@/components/dashboard/Topbar";
 import DataTable, { Column } from "@/components/dashboard/DataTable";
 import DeleteButton from "@/components/dashboard/DeleteButton";
+import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddStudentForm from "@/components/dashboard/forms/AddStudentForm";
+import EditStudentForm from "@/components/dashboard/forms/EditStudentForm";
 import { getStudents } from "@/lib/data/students";
 import { getClassOptions } from "@/lib/data/classes";
 import { deleteStudent } from "@/lib/actions/students";
@@ -24,10 +26,15 @@ export default async function SantriPage() {
       key: "id",
       header: "Aksi",
       render: (row) => (
-        <DeleteButton
-          action={deleteStudent.bind(null, row.id)}
-          confirmText={`Hapus data santri "${row.nama}"?`}
-        />
+        <div className="flex items-center gap-1">
+          <EditModal title={`Edit Santri: ${row.nama}`}>
+            <EditStudentForm student={row} classOptions={classOptions} />
+          </EditModal>
+          <DeleteButton
+            action={deleteStudent.bind(null, row.id)}
+            confirmText={`Hapus data santri "${row.nama}"?`}
+          />
+        </div>
       ),
     },
   ];

@@ -63,6 +63,24 @@ export async function updateTeacherPhoto(id: string, formData: FormData) {
   revalidateTeacherPaths();
 }
 
+/**
+ * Perbarui data teks guru (nama, mapel, hp). Foto guru punya alur sendiri
+ * lewat updateTeacherPhoto di atas, jadi tidak disentuh di sini.
+ */
+export async function updateTeacher(id: string, formData: FormData) {
+  const nama = String(formData.get("nama") ?? "").trim();
+  const mapel = String(formData.get("mapel") ?? "").trim();
+  const hp = String(formData.get("hp") ?? "").trim();
+
+  if (!nama) throw new Error("Nama guru wajib diisi.");
+
+  const supabase = getSupabaseServer();
+  const { error } = await supabase.from("teachers").update({ nama, mapel, hp }).eq("id", id);
+  if (error) throw new Error(`Gagal memperbarui guru: ${error.message}`);
+
+  revalidateTeacherPaths();
+}
+
 export async function deleteTeacher(id: string) {
   const supabase = getSupabaseServer();
 
