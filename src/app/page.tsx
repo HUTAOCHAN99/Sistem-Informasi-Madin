@@ -12,6 +12,7 @@ import Gallery from "@/components/landing/Gallery";
 import Teachers from "@/components/landing/Teachers";
 import Location from "@/components/landing/Location";
 import Footer from "@/components/landing/Footer";
+import FadeInSection from "@/components/landing/FadeInSection";
 import { getDashboardStats } from "@/lib/data/stats";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { getSchedule } from "@/lib/data/schedule";
@@ -47,16 +48,36 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <Hero />
-      <About />
-      <Stats stats={stats} />
-      <EducationLevels />
-      <Programs />
-      <Schedule schedule={schedule} />
-      <Announcements announcements={announcements.slice(0, 3)} />
-      <Gallery />
-      <Teachers teachers={teachers} />
-      <Location />
+      <FadeInSection>
+        <Hero />
+      </FadeInSection>
+      <FadeInSection>
+        <About />
+      </FadeInSection>
+      <FadeInSection>
+        <Stats stats={stats} />
+      </FadeInSection>
+      <FadeInSection>
+        <EducationLevels />
+      </FadeInSection>
+      <FadeInSection>
+        <Programs />
+      </FadeInSection>
+      <FadeInSection>
+        <Schedule schedule={schedule} />
+      </FadeInSection>
+      <FadeInSection>
+        <Announcements announcements={announcements.slice(0, 3)} />
+      </FadeInSection>
+      <FadeInSection>
+        <Gallery />
+      </FadeInSection>
+      <FadeInSection>
+        <Teachers teachers={teachers} />
+      </FadeInSection>
+      <FadeInSection>
+        <Location />
+      </FadeInSection>
       <Footer />
     </main>
   );
