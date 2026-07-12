@@ -1,4 +1,4 @@
-import { BookOpenText, Scale, Heart, Sparkle, Languages } from "lucide-react";
+import { BookOpenText, Scale, Heart, Sparkle, Languages, Lamp } from "lucide-react";
 
 const PROGRAMS = [
   {
@@ -18,14 +18,19 @@ const PROGRAMS = [
   },
   {
     icon: Sparkle,
-    name: "Tauhid",
-    desc: "Dasar-dasar keimanan dan pengenalan asma dan sifat Allah.",
+    name: "Tajwid",
+    desc: "Membaca Al-Qur'an dengan ilmu tajwid yang benar.",
   },
   {
     icon: Languages,
-    name: "Bahasa Arab",
-    desc: "Kosakata dan tata bahasa dasar untuk membantu memahami teks agama.",
+    name: "Yanbu'a",
+    desc: "Bahasa Arab untuk mendukung pembelajaran Al-Qur'an.",
   },
+  {
+    icon: Lamp,
+    name: "Program Tahfidz",
+    desc: "Melestarikan Al-Qur'an sejak dini.",
+  }
 ];
 
 export default function Programs() {
