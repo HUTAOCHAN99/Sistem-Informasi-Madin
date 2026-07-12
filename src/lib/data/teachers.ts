@@ -6,7 +6,7 @@ export async function getTeachers(): Promise<Teacher[]> {
   const supabase = getSupabaseServer();
   const { data, error } = await supabase
     .from("teachers")
-    .select("id, nama, mapel, hp")
+    .select("id, nama, mapel, hp, foto_url")
     .order("nama", { ascending: true });
 
   if (error) throw new Error(`Gagal memuat data guru: ${error.message}`);
@@ -22,7 +22,7 @@ export async function getTeacherById(id: string): Promise<Teacher | null> {
   const supabase = getSupabaseServer();
   const { data, error } = await supabase
     .from("teachers")
-    .select("id, nama, mapel, hp")
+    .select("id, nama, mapel, hp, foto_url")
     .eq("id", id)
     .maybeSingle();
 

@@ -37,7 +37,7 @@ export default function Topbar({ title }: { title: string }) {
     // jalan, dan kelihatan seperti masih login padahal cookie-nya sudah
     // kehapus. window.location memaksa reload penuh, jadi cache lama
     // ikut dibuang dan request berikutnya pasti lewat middleware.
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   return (

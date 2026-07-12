@@ -12,12 +12,13 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-// Cara pakai: taruh foto tiap guru di /public/guru/ dengan nama sesuai id:
-// 1.jpg = Ust. Ahmad Fauzi, 2.jpg = Ust. Ali Rahman, 3.jpg = Usth. Siti Aminah,
-// 4.jpg = Ust. Zainal Abidin, 5.jpg = Usth. Nur Hidayah.
-// Kalau file belum ada, otomatis kembali ke inisial nama seperti sekarang.
-function TeacherAvatar({ id, nama }: { id: string; nama: string }) {
+// Foto guru diambil dari kolom foto_url (diisi lewat upload di halaman
+// /dashboard/guru). Kalau guru belum punya foto, sebagai fallback dicoba
+// dulu file statis di /public/guru/{id}.jpg (cara lama), dan kalau itu pun
+// tidak ada, otomatis kembali ke inisial nama.
+function TeacherAvatar({ id, nama, fotoUrl }: { id: string; nama: string; fotoUrl: string | null }) {
   const [broken, setBroken] = useState(false);
+  const src = fotoUrl || `/guru/${id}.jpg`;
 
   if (broken) {
     return (
@@ -30,7 +31,7 @@ function TeacherAvatar({ id, nama }: { id: string; nama: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`/guru/${id}.jpg`}
+      src={src}
       alt={nama}
       onError={() => setBroken(true)}
       className="w-14 h-14 rounded-full object-cover mx-auto"
@@ -55,7 +56,7 @@ export default function Teachers({ teachers }: { teachers: Teacher[] }) {
               key={t.id}
               className="rounded-xl2 border border-madin-line p-6 text-center"
             >
-              <TeacherAvatar id={t.id} nama={t.nama} />
+              <TeacherAvatar id={t.id} nama={t.nama} fotoUrl={t.foto_url} />
               <h3 className="font-display font-semibold text-madin-navy text-sm mt-4">
                 {t.nama}
               </h3>

@@ -10,6 +10,7 @@ export type Teacher = {
   nama: string;
   mapel: string;
   hp: string;
+  foto_url: string | null;
 };
 
 export type Jenjang = "Awaliyah" | "Wustha" | "Ulya";
