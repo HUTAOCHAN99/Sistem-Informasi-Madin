@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const result = verifyOtp(pendingId, code);
+  const result = await verifyOtp(pendingId, code);
 
   if (!result.ok) {
     return NextResponse.json(

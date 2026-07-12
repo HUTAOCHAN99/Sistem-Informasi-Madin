@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   }
 
   const pendingId = crypto.randomUUID();
-  const code = createOtp(pendingId, email.trim().toLowerCase());
+  const code = await createOtp(pendingId, email.trim().toLowerCase());
   const { devMode, devCode } = await sendOtpEmail(email, code);
 
   const res = NextResponse.json({

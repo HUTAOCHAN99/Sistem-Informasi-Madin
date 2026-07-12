@@ -12,14 +12,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!canResend(pendingId)) {
+  if (!(await canResend(pendingId))) {
     return NextResponse.json(
       { ok: false, message: "Tunggu beberapa detik sebelum minta kode baru." },
       { status: 429 }
     );
   }
 
-  const entry = getOtpEntry(pendingId);
+  const entry = await getOtpEntry(pendingId);
   if (!entry) {
     return NextResponse.json(
       { ok: false, message: "Sesi OTP sudah kedaluwarsa. Silakan login ulang." },
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const code = resendOtp(pendingId);
+  const code = await resendOtp(pendingId);
   if (!code) {
     return NextResponse.json(
       { ok: false, message: "Gagal mengirim ulang kode. Silakan login ulang." },
