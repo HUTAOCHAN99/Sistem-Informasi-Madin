@@ -10,6 +10,7 @@ type StudentRowFromDb = {
   kelas_id: string | null;
   orang_tua: string;
   hp: string;
+  foto_url: string | null;
   classes: { nama_kelas: string; jenjang: string } | null;
 };
 
@@ -17,7 +18,9 @@ export async function getStudents(): Promise<Student[]> {
   const supabase = getSupabaseServer();
   const { data, error } = await supabase
     .from("students")
-    .select("id, nama, nis, jenis_kelamin, kelas_id, orang_tua, hp, classes ( nama_kelas, jenjang )")
+    .select(
+      "id, nama, nis, jenis_kelamin, kelas_id, orang_tua, hp, foto_url, classes ( nama_kelas, jenjang )"
+    )
     .order("nama", { ascending: true });
 
   if (error) throw new Error(`Gagal memuat data santri: ${error.message}`);
@@ -31,6 +34,7 @@ export async function getStudents(): Promise<Student[]> {
     kelas: s.classes ? `${s.classes.nama_kelas} (${s.classes.jenjang})` : "-",
     orang_tua: s.orang_tua,
     hp: s.hp,
+    foto_url: s.foto_url,
   }));
 }
 

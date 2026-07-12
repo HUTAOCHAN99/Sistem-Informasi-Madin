@@ -7,6 +7,7 @@ import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import AddStudentForm from "@/components/dashboard/forms/AddStudentForm";
 import EditStudentForm from "@/components/dashboard/forms/EditStudentForm";
+import EditStudentPhotoForm from "@/components/dashboard/forms/EditStudentPhotoForm";
 import { getStudents } from "@/lib/data/students";
 import { getClassOptions } from "@/lib/data/classes";
 import { deleteStudent } from "@/lib/actions/students";
@@ -16,6 +17,14 @@ export default async function SantriPage() {
   const [students, classOptions] = await Promise.all([getStudents(), getClassOptions()]);
 
   const columns: Column<Student>[] = [
+    {
+      key: "id",
+      id: "foto",
+      header: "Foto",
+      render: (row) => (
+        <EditStudentPhotoForm studentId={row.id} fotoUrl={row.foto_url} nama={row.nama} />
+      ),
+    },
     { key: "nis", header: "NIS" },
     { key: "nama", header: "Nama" },
     { key: "jenis_kelamin", header: "L/P" },

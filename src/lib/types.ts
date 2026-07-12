@@ -33,6 +33,7 @@ export type Student = {
   kelas: string; // nama kelas, sudah di-join. "-" kalau belum punya kelas.
   orang_tua: string;
   hp: string;
+  foto_url: string | null;
 };
 
 export type Hari = "Senin" | "Selasa" | "Rabu" | "Kamis" | "Jumat" | "Sabtu" | "Minggu";

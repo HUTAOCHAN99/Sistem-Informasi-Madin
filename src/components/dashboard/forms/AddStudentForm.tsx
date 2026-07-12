@@ -46,6 +46,15 @@ export default function AddStudentForm({ classOptions }: { classOptions: SelectO
         <input name="hp" placeholder="0812-0000-0000" className={input} />
       </div>
       <div className="sm:col-span-3">
+        <label className={label}>Foto (opsional, JPG/PNG/WEBP, maks 2MB)</label>
+        <input
+          type="file"
+          name="foto"
+          accept="image/png, image/jpeg, image/webp"
+          className={`${input} file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-madin-teal/10 file:text-madin-teal file:text-xs file:font-medium file:cursor-pointer cursor-pointer`}
+        />
+      </div>
+      <div className="sm:col-span-3">
         <button
           type="submit"
           className="bg-madin-teal text-white text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
