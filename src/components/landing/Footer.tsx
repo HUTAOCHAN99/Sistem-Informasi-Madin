@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV = [
@@ -20,9 +21,13 @@ export default function Footer() {
         <div className="grid sm:grid-cols-[1.4fr_1fr_1fr] gap-10">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="w-8 h-8 rounded-lg bg-madin-orange flex items-center justify-center font-display font-bold text-madin-navy text-sm">
-                M
-              </span>
+              <Image
+                src="/icon.png"
+                alt="Madin icon"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-lg object-cover"
+              />
               <span className="font-display font-semibold text-white text-[15px]">
                 Madrasah Diniyah
               </span>
@@ -74,7 +79,7 @@ export default function Footer() {
             href="/dashboard"
             className="text-madin-orange text-xs font-semibold hover:text-white transition-colors"
           >
-            Masuk ke Sistem Informasi →
+            Masuk →
           </Link>
         </div>
       </div>

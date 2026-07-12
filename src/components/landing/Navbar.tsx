@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -34,9 +35,13 @@ export default function Navbar() {
     >
       <nav className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 shrink-0">
-          <span className="w-8 h-8 rounded-lg bg-madin-orange flex items-center justify-center font-display font-bold text-madin-navy text-sm">
-            M
-          </span>
+          <Image
+            src="/icon.png"
+            alt="Madin icon"
+            width={32}
+            height={32}
+            className="w-8 h-8 rounded-lg object-cover"
+          />
           <span className="font-display font-semibold text-white text-[15px] leading-tight">
             Madrasah Diniyah
           </span>
@@ -59,7 +64,7 @@ export default function Navbar() {
             href="/dashboard"
             className="bg-madin-orange text-madin-navy font-display font-semibold text-sm px-4 py-2 rounded-lg hover:bg-madin-orangeDark hover:text-white transition-colors"
           >
-            Masuk Sistem
+            Masuk
           </Link>
         </div>
 
@@ -88,7 +93,7 @@ export default function Navbar() {
             href="/dashboard"
             className="block text-center mt-2 bg-madin-orange text-madin-navy font-display font-semibold text-sm px-4 py-2.5 rounded-lg"
           >
-            Masuk Sistem
+             Masuk
           </Link>
         </div>
       )}
