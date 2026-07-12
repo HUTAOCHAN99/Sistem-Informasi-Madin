@@ -6,10 +6,10 @@ const config: Config = {
     extend: {
       colors: {
         madin: {
-          navy: "#132A3A",     // sidebar / header dasar
-          navySoft: "#1B3A4F",
-          orange: "#F7941D",   // aksen utama (dari tema Eduka)
-          orangeDark: "#DC7F0F",
+          navy: "#092A0E",     // sidebar / header dasar
+          navySoft: "#0F4117",
+          orange: "#FFD700",   // aksen utama (dari tema Eduka)
+          orangeDark: "#FFD700",
           teal: "#1F6F5C",     // aksen hijau madrasah
           cream: "#F7F7F5",    // background halaman
           line: "#E7E7E2",
