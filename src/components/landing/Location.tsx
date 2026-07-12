@@ -7,7 +7,7 @@ const INFO = [
   {
     icon: MapPin,
     label: "Alamat",
-    value: "Jl. Pendidikan Raya No. 12, Ungaran, Kabupaten Semarang, Jawa Tengah",
+    value: "Kebondalem, RT.01/RW.04, Kebondalem, Sukorejo, Kec. Mojotengah, Kabupaten Wonosobo, Jawa Tengah 56351",
   },
   {
     icon: Clock3,
@@ -80,7 +80,7 @@ export default function Location() {
               className="w-full h-full min-h-[280px]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Ungaran,Kabupaten+Semarang,Jawa+Tengah&output=embed"
+               src="https://www.google.com/maps?q=-7.323433209195681,109.89809775858323&output=embed"
             />
           </div>
         </div>

@@ -28,23 +28,28 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        scrolled ? "bg-madin-navy/95 backdrop-blur border-b border-white/10" : "bg-transparent"
-      }`}
-    >
+    <header className="fixed top-0 inset-x-0 z-50 bg-madin-navy/95 backdrop-blur border-b border-white/10 transition-colors duration-300">
       <nav className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 shrink-0">
           <Image
             src="/icon.png"
             alt="Madin icon"
-            width={32}
-            height={32}
-            className="w-8 h-8 rounded-lg object-cover"
+            width={128}
+            height={128}
+            className="w-12 h-12 rounded-lg object-cover"
           />
-          <span className="font-display font-semibold text-white text-[15px] leading-tight">
-            Madrasah Diniyah
-          </span>
+          <div className="flex flex-col">
+            <Image
+              src="/madin-teks.png"
+              alt="Madin logo text"
+              width={256}
+              height={128}
+              className="h-8 w-auto brightness-0 invert"
+            />
+            <span className="text-sm font-display font-bold text-white/70">
+              Madrasah Diniyah Nurul Huda
+            </span>
+          </div>
         </a>
 
         <div className="hidden lg:flex items-center gap-7">
@@ -93,7 +98,7 @@ export default function Navbar() {
             href="/dashboard"
             className="block text-center mt-2 bg-madin-orange text-madin-navy font-display font-semibold text-sm px-4 py-2.5 rounded-lg"
           >
-             Masuk
+            Masuk
           </Link>
         </div>
       )}

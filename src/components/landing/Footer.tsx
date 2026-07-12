@@ -29,7 +29,7 @@ export default function Footer() {
                 className="w-8 h-8 rounded-lg object-cover"
               />
               <span className="font-display font-semibold text-white text-[15px]">
-                Madrasah Diniyah
+                Madrasah Diniyah Nurul Huda
               </span>
             </div>
             <p className="text-white/50 text-sm leading-relaxed mt-4 max-w-xs">
