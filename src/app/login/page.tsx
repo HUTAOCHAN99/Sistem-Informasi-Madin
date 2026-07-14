@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Moon, Lock, Mail, Loader2 } from "lucide-react";
+import { Lock, Mail, Loader2, Eye, EyeOff } from "lucide-react";
 
 function LoginPageInner() {
   const router = useRouter();
@@ -11,6 +12,7 @@ function LoginPageInner() {
 
   const [email, setEmail] = useState("admin@madin.sch.id");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,11 +43,25 @@ function LoginPageInner() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-madin-cream px-4 py-10">
       <div className="w-full max-w-md">
-        <div className="flex flex-col items-center gap-2 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-madin-orange flex items-center justify-center">
-            <Moon className="w-6 h-6 text-madin-navy" />
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <div className="w-20 h-20 rounded-2xl bg-white/70 border border-madin-line p-2 shadow-sm">
+            <Image
+              src="/icon.png"
+              alt="Madin icon"
+              width={80}
+              height={80}
+              priority
+              className="w-full h-full object-contain"
+            />
           </div>
-          <p className="font-display font-semibold text-madin-navy text-lg">Madin</p>
+          <Image
+            src="/madin-teks.png"
+            alt="Madin"
+            width={180}
+            height={48}
+            priority
+            className="h-8 w-auto"
+          />
           <p className="text-xs text-black/40">Sistem Informasi Madrasah Diniyah</p>
         </div>
 
@@ -82,13 +98,21 @@ function LoginPageInner() {
               <div className="flex items-center gap-2 border border-madin-line rounded-lg px-3 py-2.5 focus-within:border-madin-orange focus-within:ring-2 focus-within:ring-madin-orange/30 transition-colors">
                 <Lock className="w-4 h-4 text-black/30 shrink-0" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full bg-transparent text-sm outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+                  className="text-black/40 hover:text-madin-navy transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 

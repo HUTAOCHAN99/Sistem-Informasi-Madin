@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,7 +14,6 @@ import {
   NotebookPen,
   Megaphone,
   Settings,
-  Moon,
   Menu,
   X,
 } from "lucide-react";
@@ -32,12 +32,12 @@ const NAV = [
 function Brand() {
   return (
     <div className="flex items-center gap-2">
-      <div className="w-9 h-9 rounded-lg bg-madin-orange flex items-center justify-center shrink-0">
-        <Moon className="w-5 h-5 text-madin-navy" />
+      <div className="w-10 h-10 rounded-lg bg-white/10 p-1.5 shrink-0">
+        <Image src="/icon.png" alt="Madin icon" width={40} height={40} className="w-full h-full object-contain" />
       </div>
-      <div>
-        <p className="font-display font-semibold leading-tight">Madin</p>
-        <p className="text-[11px] text-white/50 leading-tight">Sistem Informasi</p>
+      <div className="min-w-0">
+        <Image src="/madin-teks.png" alt="Madin" width={96} height={24} className="h-5 w-auto" />
+        <p className="text-[11px] text-white/50 leading-tight mt-0.5">Sistem Informasi</p>
       </div>
     </div>
   );
