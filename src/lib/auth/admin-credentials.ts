@@ -1,35 +1,45 @@
 // src/lib/auth/admin-credentials.ts
 //
-// Kredensial admin untuk tahap sekarang masih 1 akun, disimpan lewat
-// environment variable (bukan hardcode di kode, bukan pula tabel Supabase
-// dulu — supaya login+OTP bisa langsung jalan sebelum Supabase Auth
-// beneran disambungkan).
+// Kredensial admin disimpan di tabel Supabase `admins` (lihat
+// supabase/schema.sql), BUKAN di environment variable / hardcode lagi.
+// Akun bersifat statis: satu baris yang kamu insert sendiri lewat SQL
+// Editor Supabase, berisi email + password yang SUDAH di-hash bcrypt
+// (kolom password_hash). Password asli TIDAK PERNAH disimpan di database
+// maupun di kode.
 //
-// Nanti kalau sudah pakai Supabase Auth / tabel `users` dengan role
-// admin & guru, fungsi verifyAdminCredentials() ini tinggal diganti jadi
-// query ke database. Bentuk return-nya (boolean) sengaja dibuat sederhana
-// supaya gampang di-swap.
+// Cara bikin/ganti akun admin: lihat instruksi di supabase/schema.sql
+// bagian "ADMINS", atau generate hash baru dengan:
+//   node -e "console.log(require('bcryptjs').hashSync('password-baru', 10))"
+// lalu jalankan:
+//   update public.admins set password_hash = '<hash-baru>' where email = 'admin@madin.sch.id';
 
 import bcrypt from "bcryptjs";
+import { getSupabaseServer } from "@/lib/supabase/server";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@madin.sch.id";
+type AdminRow = {
+  id: string;
+  email: string;
+  password_hash: string;
+};
 
-// Hash bcrypt dari password default "admin123".
-// GANTI di .env.local (ADMIN_PASSWORD_HASH) untuk pemakaian sungguhan.
-// Cara bikin hash baru:
-//   node -e "console.log(require('bcryptjs').hashSync('password-baru', 10))"
-const ADMIN_PASSWORD_HASH =
-  process.env.ADMIN_PASSWORD_HASH ??
-  "$2b$10$I7az/.KoxoMYA0PRUcWJye5i2AwJH1ZQpxV5FNQZF83/xNw.ZQXYG";
+export async function verifyAdminCredentials(
+  email: string,
+  password: string
+): Promise<boolean> {
+  const supabase = getSupabaseServer();
 
-export function getAdminEmail() {
-  return ADMIN_EMAIL;
-}
+  const { data, error } = await supabase
+    .from("admins")
+    .select("id, email, password_hash")
+    .eq("email", email.trim().toLowerCase())
+    .maybeSingle();
 
-export async function verifyAdminCredentials(email: string, password: string) {
-  const emailMatch = email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase();
-  if (!emailMatch) return false;
+  if (error) {
+    throw new Error(`Gagal membaca data admin: ${error.message}`);
+  }
 
-  const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-  return passwordMatch;
+  const admin = data as AdminRow | null;
+  if (!admin) return false;
+
+  return bcrypt.compare(password, admin.password_hash);
 }

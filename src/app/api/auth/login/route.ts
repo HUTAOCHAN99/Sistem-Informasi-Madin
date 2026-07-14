@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { verifyAdminCredentials } from "@/lib/auth/admin-credentials";
-import { createOtp } from "@/lib/auth/otp-store";
-import { sendOtpEmail } from "@/lib/auth/send-otp";
-import { PENDING_COOKIE } from "@/lib/auth/session";
+import {
+  SESSION_COOKIE,
+  SESSION_MAX_AGE_SECONDS,
+  createSessionToken,
+} from "@/lib/auth/session";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -25,24 +26,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const pendingId = crypto.randomUUID();
-  const code = await createOtp(pendingId, email.trim().toLowerCase());
-  const { devMode, devCode } = await sendOtpEmail(email, code);
+  const token = await createSessionToken(email.trim().toLowerCase());
 
-  const res = NextResponse.json({
-    ok: true,
-    message: devMode
-      ? "Kode OTP berhasil dibuat (mode pengembangan — lihat di bawah)."
-      : "Kode OTP telah dikirim ke email kamu.",
-    devOtp: devCode, // hanya terisi kalau OTP_DEV_MODE=true
-  });
+  const res = NextResponse.json({ ok: true, message: "Login berhasil." });
 
-  res.cookies.set(PENDING_COOKIE, pendingId, {
+  res.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 5 * 60, // 5 menit, samakan dengan TTL OTP
+    maxAge: SESSION_MAX_AGE_SECONDS,
   });
 
   return res;

@@ -14,7 +14,6 @@
 // dengan session bawaan Supabase (supabase.auth.getSession(), dst).
 
 export const SESSION_COOKIE = "madin_admin_session";
-export const PENDING_COOKIE = "madin_otp_pending";
 
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000; // 8 jam
 const SECRET = process.env.SESSION_SECRET ?? "madin-dev-secret-ganti-di-produksi";
