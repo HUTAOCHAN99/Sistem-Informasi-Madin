@@ -68,20 +68,7 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
   );
 }
 
-function SettingsLink({ onNavigate }: { onNavigate?: () => void }) {
-  return (
-    <div className="px-3 py-4 border-t border-white/10">
-      <Link
-        href="/dashboard/pengaturan"
-        onClick={onNavigate}
-        className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/60 hover:bg-white/5 hover:text-white transition-colors"
-      >
-        <Settings className="w-4 h-4" />
-        Pengaturan
-      </Link>
-    </div>
-  );
-}
+
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -143,7 +130,6 @@ export default function Sidebar() {
           </button>
         </div>
         <NavLinks pathname={pathname} onNavigate={() => setOpen(false)} />
-        <SettingsLink onNavigate={() => setOpen(false)} />
       </aside>
 
       {/* Sidebar desktop: tetap seperti semula */}
@@ -152,7 +138,6 @@ export default function Sidebar() {
           <Brand />
         </div>
         <NavLinks pathname={pathname} />
-        <SettingsLink />
       </aside>
     </>
   );

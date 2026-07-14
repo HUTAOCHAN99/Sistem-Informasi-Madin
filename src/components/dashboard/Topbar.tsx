@@ -55,11 +55,6 @@ export default function Topbar({ title }: { title: string }) {
             className="bg-transparent text-sm outline-none w-full placeholder:text-black/30"
           />
         </div>
-        <button className="relative w-9 h-9 rounded-lg border border-madin-line flex items-center justify-center hover:bg-madin-cream">
-          <Bell className="w-4 h-4 text-madin-navy" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-madin-orange" />
-        </button>
-
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen((v) => !v)}
