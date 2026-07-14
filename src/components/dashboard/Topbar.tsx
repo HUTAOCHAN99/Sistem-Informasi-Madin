@@ -44,7 +44,6 @@ export default function Topbar({ title }: { title: string }) {
     <header className="flex items-center justify-between gap-4 px-6 py-4 bg-white border-b border-madin-line">
       <div>
         <h1 className="font-display text-lg font-semibold text-madin-navy">{title}</h1>
-        <p className="text-xs text-black/40">Data ditampilkan sementara masih dummy</p>
       </div>
 
       <div className="flex items-center gap-3">
