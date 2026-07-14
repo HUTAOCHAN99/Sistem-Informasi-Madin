@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MapPin, Phone, Clock3 } from "lucide-react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 
 const INFO = [
   {
@@ -30,12 +31,12 @@ function BuildingPhoto() {
   if (broken) return null;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <PreviewableImage
       src="/lokasi/gedung.jpg"
       alt="Gedung Madrasah Diniyah"
       onError={() => setBroken(true)}
       className="w-full h-40 object-cover rounded-xl2 border border-madin-line"
+      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
     />
   );
 }

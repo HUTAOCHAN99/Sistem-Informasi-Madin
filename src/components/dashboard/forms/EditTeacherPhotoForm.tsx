@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Camera, Loader2 } from "lucide-react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 import { updateTeacherPhoto } from "@/lib/actions/teachers";
 
 function initials(name: string) {
@@ -45,8 +46,12 @@ export default function EditTeacherPhotoForm({
         className="flex items-center gap-2"
       >
         {fotoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={fotoUrl} alt={nama} className="w-10 h-10 rounded-full object-cover" />
+          <PreviewableImage
+            src={fotoUrl}
+            alt={nama}
+            className="w-10 h-10 rounded-full object-cover"
+            previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
+          />
         ) : (
           <div className="w-10 h-10 rounded-full bg-madin-teal/10 text-madin-teal text-xs font-display font-semibold flex items-center justify-center">
             {initials(nama)}

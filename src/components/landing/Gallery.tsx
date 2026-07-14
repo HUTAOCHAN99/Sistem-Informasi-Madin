@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 
 // Cara pakai:
 // 1. Taruh file foto di folder /public/gallery/ dengan nama persis seperti di bawah
@@ -36,12 +37,12 @@ function GalleryTile({ file, caption, tone }: (typeof TILES)[number]) {
   return (
     <div className="relative aspect-[4/3] rounded-xl2 overflow-hidden group">
       {!broken ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <PreviewableImage
           src={src}
           alt={caption}
           onError={() => setBroken(true)}
           className="w-full h-full object-cover"
+          previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
         />
       ) : (
         <div className={`w-full h-full ${tone} flex items-center justify-center`}>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { HeartHandshake, ShieldCheck, Target } from "lucide-react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 
 const VALUES = [
   {
@@ -49,12 +50,12 @@ function AboutPhoto() {
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <PreviewableImage
       src="/about/madrasah.jpg"
       alt="Suasana Madrasah Diniyah"
       onError={() => setBroken(true)}
       className="w-full h-full min-h-[260px] object-cover rounded-xl2"
+      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
     />
   );
 }

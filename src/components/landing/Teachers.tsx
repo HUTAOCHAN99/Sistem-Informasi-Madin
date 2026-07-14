@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 import type { Teacher } from "@/lib/types";
 
 function initials(name: string) {
@@ -29,12 +30,12 @@ function TeacherAvatar({ id, nama, fotoUrl }: { id: string; nama: string; fotoUr
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <PreviewableImage
       src={src}
       alt={nama}
       onError={() => setBroken(true)}
       className="w-14 h-14 rounded-full object-cover mx-auto"
+      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
     />
   );
 }

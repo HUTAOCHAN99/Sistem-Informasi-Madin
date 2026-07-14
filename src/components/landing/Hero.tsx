@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BookOpen, Sparkles } from "lucide-react";
+import PreviewableImage from "@/components/ui/PreviewableImage";
 
 // Cara pakai: taruh foto di /public/hero/madrasah.jpg (foto gedung atau
 // suasana belajar). Kalau file belum ada, otomatis kembali ke motif
@@ -24,12 +25,12 @@ function HeroPhoto() {
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <PreviewableImage
       src="/hero/madrasah.jpg"
       alt="Suasana Madrasah Diniyah"
       onError={() => setBroken(true)}
       className="w-full aspect-[4/3] object-cover"
+      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
     />
   );
 }
