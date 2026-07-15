@@ -7,6 +7,7 @@ import DeleteButton from "@/components/dashboard/DeleteButton";
 import EditModal from "@/components/dashboard/EditModal";
 import AddPanel from "@/components/dashboard/AddPanel";
 import SppPeriodPicker from "@/components/dashboard/SppPeriodPicker";
+import CetakSppButton from "@/components/dashboard/CetakSppButton";
 import AddSppForm from "@/components/dashboard/forms/AddSppForm";
 import EditSppForm from "@/components/dashboard/forms/EditSppForm";
 import { getPayments, getPaymentSummary } from "@/lib/data/payments";
@@ -103,6 +104,7 @@ export default async function SppPage({
           </div>
           <div className="flex items-center gap-3">
             <SppPeriodPicker bulan={bulan} tahun={tahun} />
+            <CetakSppButton bulan={bulan} tahun={tahun} q={q} />
             <AddPanel label="Tambah Pembayaran">
               <AddSppForm studentOptions={studentOptions} defaultBulan={bulan} defaultTahun={tahun} />
             </AddPanel>
