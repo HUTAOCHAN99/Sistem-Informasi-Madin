@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PreviewableImage from "@/components/ui/PreviewableImage";
+import { ZoomIn } from "lucide-react";
+import ImageLightbox from "./ImageLightbox";
 
 // Cara pakai:
 // 1. Taruh file foto di folder /public/gallery/ dengan nama persis seperti di bawah
@@ -32,28 +33,49 @@ function Motif() {
 
 function GalleryTile({ file, caption, tone }: (typeof TILES)[number]) {
   const [broken, setBroken] = useState(false);
+  const [preview, setPreview] = useState(false);
   const src = `/gallery/${file}`;
 
   return (
-    <div className="relative aspect-[4/3] rounded-xl2 overflow-hidden group">
-      {!broken ? (
-        <PreviewableImage
-          src={src}
-          alt={caption}
-          onError={() => setBroken(true)}
-          className="w-full h-full object-cover"
-          previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
-        />
-      ) : (
-        <div className={`w-full h-full ${tone} flex items-center justify-center`}>
-          <Motif />
-        </div>
+    <>
+      <div
+        role={!broken ? "button" : undefined}
+        tabIndex={!broken ? 0 : undefined}
+        onClick={() => !broken && setPreview(true)}
+        onKeyDown={(e) => {
+          if (!broken && (e.key === "Enter" || e.key === " ")) setPreview(true);
+        }}
+        aria-label={!broken ? `Perbesar foto: ${caption}` : undefined}
+        className={`relative aspect-[4/3] rounded-xl2 overflow-hidden group ${
+          !broken ? "cursor-zoom-in" : ""
+        }`}
+      >
+        {!broken ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt={caption}
+            onError={() => setBroken(true)}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className={`w-full h-full ${tone} flex items-center justify-center`}>
+            <Motif />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
+        {!broken && (
+          <ZoomIn className="absolute top-4 right-4 w-5 h-5 text-white/0 group-hover:text-white/90 transition-colors" />
+        )}
+        <span className="absolute bottom-4 left-4 right-4 text-white text-sm font-display font-medium">
+          {caption}
+        </span>
+      </div>
+
+      {preview && (
+        <ImageLightbox src={src} alt={caption} onClose={() => setPreview(false)} />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
-      <span className="absolute bottom-4 left-4 right-4 text-white text-sm font-display font-medium">
-        {caption}
-      </span>
-    </div>
+    </>
   );
 }
 

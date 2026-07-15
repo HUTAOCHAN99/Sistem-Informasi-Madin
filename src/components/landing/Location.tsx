@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Phone, Clock3 } from "lucide-react";
-import PreviewableImage from "@/components/ui/PreviewableImage";
+import { MapPin, Phone, Clock3, ZoomIn } from "lucide-react";
+import ImageLightbox from "./ImageLightbox";
 
 const INFO = [
   {
@@ -22,22 +22,43 @@ const INFO = [
   },
 ];
 
+const BUILDING_SRC = "/lokasi/gedung.jpg";
+const BUILDING_ALT = "Gedung Madrasah Diniyah";
+
 // Cara pakai: taruh foto gedung/gerbang di /public/lokasi/gedung.jpg.
 // Kalau file belum ada, kartu foto ini otomatis disembunyikan dan
-// tata letak kembali seperti semula (info + peta saja).
+// tata letak kembali seperti semula (info + peta saja). Foto bisa diklik
+// untuk melihat versi utuhnya (tidak terpotong) lewat pratinjau layar penuh.
 function BuildingPhoto() {
   const [broken, setBroken] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   if (broken) return null;
 
   return (
-    <PreviewableImage
-      src="/lokasi/gedung.jpg"
-      alt="Gedung Madrasah Diniyah"
-      onError={() => setBroken(true)}
-      className="w-full h-40 object-cover rounded-xl2 border border-madin-line"
-      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
-    />
+    <>
+      <button
+        type="button"
+        onClick={() => setPreview(true)}
+        className="relative w-full h-40 block group cursor-zoom-in rounded-xl2 overflow-hidden border border-madin-line"
+        aria-label="Perbesar foto gedung"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BUILDING_SRC}
+          alt={BUILDING_ALT}
+          onError={() => setBroken(true)}
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <ZoomIn className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+        </span>
+      </button>
+
+      {preview && (
+        <ImageLightbox src={BUILDING_SRC} alt={BUILDING_ALT} onClose={() => setPreview(false)} />
+      )}
+    </>
   );
 }
 

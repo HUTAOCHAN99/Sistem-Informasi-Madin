@@ -1,14 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpen, Sparkles } from "lucide-react";
-import PreviewableImage from "@/components/ui/PreviewableImage";
+import { BookOpen, Sparkles, ZoomIn } from "lucide-react";
+import ImageLightbox from "./ImageLightbox";
+
+const HERO_SRC = "/hero/madrasah.jpg";
+const HERO_ALT = "Suasana Madrasah Diniyah";
 
 // Cara pakai: taruh foto di /public/hero/madrasah.jpg (foto gedung atau
 // suasana belajar). Kalau file belum ada, otomatis kembali ke motif
-// geometris seperti sekarang.
+// geometris seperti sekarang. Foto bisa diklik untuk melihat versi utuhnya
+// (tidak terpotong) lewat pratinjau layar penuh.
 function HeroPhoto() {
   const [broken, setBroken] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   if (broken) {
     return (
@@ -25,13 +30,29 @@ function HeroPhoto() {
   }
 
   return (
-    <PreviewableImage
-      src="/hero/madrasah.jpg"
-      alt="Suasana Madrasah Diniyah"
-      onError={() => setBroken(true)}
-      className="w-full aspect-[4/3] object-cover"
-      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
-    />
+    <>
+      <button
+        type="button"
+        onClick={() => setPreview(true)}
+        className="relative w-full aspect-[4/3] block group cursor-zoom-in"
+        aria-label="Perbesar foto"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={HERO_SRC}
+          alt={HERO_ALT}
+          onError={() => setBroken(true)}
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <ZoomIn className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+        </span>
+      </button>
+
+      {preview && (
+        <ImageLightbox src={HERO_SRC} alt={HERO_ALT} onClose={() => setPreview(false)} />
+      )}
+    </>
   );
 }
 

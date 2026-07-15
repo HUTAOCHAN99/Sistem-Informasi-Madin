@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import PreviewableImage from "@/components/ui/PreviewableImage";
 import type { Teacher } from "@/lib/types";
+import ImageLightbox from "./ImageLightbox";
 
 function initials(name: string) {
   const parts = name.replace(/^(Ust\.|Usth\.)\s*/i, "").split(" ");
@@ -19,6 +19,7 @@ function initials(name: string) {
 // tidak ada, otomatis kembali ke inisial nama.
 function TeacherAvatar({ id, nama, fotoUrl }: { id: string; nama: string; fotoUrl: string | null }) {
   const [broken, setBroken] = useState(false);
+  const [preview, setPreview] = useState(false);
   const src = fotoUrl || `/guru/${id}.jpg`;
 
   if (broken) {
@@ -30,13 +31,24 @@ function TeacherAvatar({ id, nama, fotoUrl }: { id: string; nama: string; fotoUr
   }
 
   return (
-    <PreviewableImage
-      src={src}
-      alt={nama}
-      onError={() => setBroken(true)}
-      className="w-14 h-14 rounded-full object-cover mx-auto"
-      previewClassName="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl"
-    />
+    <>
+      <button
+        type="button"
+        onClick={() => setPreview(true)}
+        aria-label={`Perbesar foto ${nama}`}
+        className="block mx-auto cursor-zoom-in"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={nama}
+          onError={() => setBroken(true)}
+          className="w-14 h-14 rounded-full object-cover mx-auto"
+        />
+      </button>
+
+      {preview && <ImageLightbox src={src} alt={nama} onClose={() => setPreview(false)} />}
+    </>
   );
 }
 
