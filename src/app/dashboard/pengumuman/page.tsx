@@ -8,17 +8,27 @@ import AddAnnouncementForm from "@/components/dashboard/forms/AddAnnouncementFor
 import EditAnnouncementForm from "@/components/dashboard/forms/EditAnnouncementForm";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { deleteAnnouncement } from "@/lib/actions/announcements";
+import { matchQuery } from "@/lib/utils/search";
 import { Megaphone } from "lucide-react";
 
-export default async function PengumumanPage() {
-  const announcements = await getAnnouncements();
+export default async function PengumumanPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const allAnnouncements = await getAnnouncements();
+  const announcements = allAnnouncements.filter((a) => matchQuery(q, a.judul, a.isi));
 
   return (
     <>
-      <Topbar title="Pengumuman" />
+      <Topbar title="Pengumuman" searchPlaceholder="Cari judul, isi..." />
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-black/50">{announcements.length} pengumuman aktif</p>
+          <p className="text-sm text-black/50">
+            {announcements.length} pengumuman
+            {q ? ` ditemukan (dari ${allAnnouncements.length})` : " aktif"}
+          </p>
           <AddPanel label="Buat Pengumuman">
             <AddAnnouncementForm />
           </AddPanel>
@@ -49,7 +59,9 @@ export default async function PengumumanPage() {
             </div>
           ))}
           {announcements.length === 0 && (
-            <p className="text-sm text-black/40">Belum ada pengumuman.</p>
+            <p className="text-sm text-black/40">
+              {q ? "Tidak ada pengumuman yang cocok dengan pencarian." : "Belum ada pengumuman."}
+            </p>
           )}
         </div>
       </div>

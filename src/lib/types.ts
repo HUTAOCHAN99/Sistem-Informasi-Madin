@@ -77,6 +77,28 @@ export type Announcement = {
   tanggal: string;
 };
 
+export type PaymentStatus = "Lunas" | "Belum Lunas";
+
+export type PaymentRow = {
+  id: string;
+  siswa_id: string;
+  siswa: string;
+  kelas: string;
+  bulan: number; // 1-12
+  tahun: number;
+  nominal: number;
+  status: PaymentStatus;
+  tanggal_bayar: string | null;
+  keterangan: string;
+};
+
+export type PaymentSummary = {
+  totalSantri: number;
+  jumlahLunas: number;
+  jumlahBelumLunas: number;
+  totalTerkumpul: number;
+};
+
 export type DashboardStats = {
   totalGuru: number;
   totalSantri: number;

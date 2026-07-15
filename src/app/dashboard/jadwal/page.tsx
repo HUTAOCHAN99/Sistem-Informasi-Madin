@@ -11,14 +11,23 @@ import { getSchedule } from "@/lib/data/schedule";
 import { getTeacherOptions } from "@/lib/data/teachers";
 import { getClassOptions } from "@/lib/data/classes";
 import { deleteSchedule } from "@/lib/actions/schedule";
+import { matchQuery } from "@/lib/utils/search";
 import type { ScheduleItem } from "@/lib/types";
 
-export default async function JadwalPage() {
-  const [schedule, teacherOptions, classOptions] = await Promise.all([
+export default async function JadwalPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const [allSchedule, teacherOptions, classOptions] = await Promise.all([
     getSchedule(),
     getTeacherOptions(),
     getClassOptions(),
   ]);
+  const schedule = allSchedule.filter((s) =>
+    matchQuery(q, s.hari, s.jam, s.mapel, s.guru, s.kelas)
+  );
 
   const columns: Column<ScheduleItem>[] = [
     { key: "hari", header: "Hari" },
@@ -49,15 +58,17 @@ export default async function JadwalPage() {
 
   return (
     <>
-      <Topbar title="Jadwal Pelajaran" />
+      <Topbar title="Jadwal Pelajaran" searchPlaceholder="Cari mapel, guru, kelas..." />
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-black/50">{schedule.length} sesi terjadwal</p>
+          <p className="text-sm text-black/50">
+            {schedule.length} sesi{q ? ` ditemukan (dari ${allSchedule.length})` : " terjadwal"}
+          </p>
           <AddPanel label="Tambah Jadwal">
             <AddScheduleForm teacherOptions={teacherOptions} classOptions={classOptions} />
           </AddPanel>
         </div>
-        <DataTable columns={columns} rows={schedule} />
+        <DataTable columns={columns} rows={schedule} emptyMessage={q ? "Tidak ada jadwal yang cocok dengan pencarian." : "Belum ada data."} />
       </div>
     </>
   );

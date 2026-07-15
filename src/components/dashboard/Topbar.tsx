@@ -1,12 +1,50 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Bell, Search, LogOut, ChevronDown } from "lucide-react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { Bell, Search, LogOut, ChevronDown, X } from "lucide-react";
 
-export default function Topbar({ title }: { title: string }) {
+export default function Topbar({
+  title,
+  searchPlaceholder = "Cari...",
+}: {
+  title: string;
+  searchPlaceholder?: string;
+}) {
   const [email, setEmail] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentQ = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(currentQ);
+
+  // Sinkronkan input kalau query berubah dari luar (mis. navigasi via link
+  // lain atau tombol back/forward browser).
+  useEffect(() => {
+    setQuery(currentQ);
+  }, [currentQ]);
+
+  // Debounce: baru dorong ke URL 400ms setelah user berhenti mengetik,
+  // supaya tidak nge-refetch data server tiap ketikan huruf.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query === currentQ) return;
+      const params = new URLSearchParams(searchParams.toString());
+      if (query.trim()) {
+        params.set("q", query.trim());
+      } else {
+        params.delete("q");
+      }
+      const qs = params.toString();
+      router.push(qs ? `${pathname}?${qs}` : pathname);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, 400);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -48,11 +86,23 @@ export default function Topbar({ title }: { title: string }) {
 
       <div className="flex items-center gap-3">
         <div className="hidden sm:flex items-center gap-2 bg-madin-cream border border-madin-line rounded-lg px-3 py-2 w-56">
-          <Search className="w-4 h-4 text-black/30" />
+          <Search className="w-4 h-4 text-black/30 shrink-0" />
           <input
-            placeholder="Cari..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={searchPlaceholder}
             className="bg-transparent text-sm outline-none w-full placeholder:text-black/30"
           />
+          {query && (
+            <button
+              type="button"
+              aria-label="Bersihkan pencarian"
+              onClick={() => setQuery("")}
+              className="text-black/30 hover:text-black/60 shrink-0"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
         <div className="relative" ref={menuRef}>
           <button
@@ -87,4 +137,3 @@ export default function Topbar({ title }: { title: string }) {
     </header>
   );
 }
-

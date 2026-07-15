@@ -11,10 +11,19 @@ import EditStudentPhotoForm from "@/components/dashboard/forms/EditStudentPhotoF
 import { getStudents } from "@/lib/data/students";
 import { getClassOptions } from "@/lib/data/classes";
 import { deleteStudent } from "@/lib/actions/students";
+import { matchQuery } from "@/lib/utils/search";
 import type { Student } from "@/lib/types";
 
-export default async function SantriPage() {
-  const [students, classOptions] = await Promise.all([getStudents(), getClassOptions()]);
+export default async function SantriPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const [allStudents, classOptions] = await Promise.all([getStudents(), getClassOptions()]);
+  const students = allStudents.filter((s) =>
+    matchQuery(q, s.nama, s.nis, s.kelas, s.orang_tua, s.hp)
+  );
 
   const columns: Column<Student>[] = [
     {
@@ -50,15 +59,17 @@ export default async function SantriPage() {
 
   return (
     <>
-      <Topbar title="Data Santri" />
+      <Topbar title="Data Santri" searchPlaceholder="Cari nama, NIS, kelas..." />
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-black/50">{students.length} santri terdaftar</p>
+          <p className="text-sm text-black/50">
+            {students.length} santri{q ? ` ditemukan (dari ${allStudents.length})` : " terdaftar"}
+          </p>
           <AddPanel label="Tambah Santri">
             <AddStudentForm classOptions={classOptions} />
           </AddPanel>
         </div>
-        <DataTable columns={columns} rows={students} />
+        <DataTable columns={columns} rows={students} emptyMessage={q ? "Tidak ada santri yang cocok dengan pencarian." : "Belum ada data."} />
       </div>
     </>
   );

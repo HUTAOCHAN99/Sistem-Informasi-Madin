@@ -6,17 +6,25 @@ import { Users, GraduationCap, School, Megaphone, CalendarDays } from "lucide-re
 import { getDashboardStats } from "@/lib/data/stats";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { getSchedule } from "@/lib/data/schedule";
+import { matchQuery } from "@/lib/utils/search";
 
-export default async function DashboardPage() {
-  const [stats, announcements, schedule] = await Promise.all([
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const [stats, allAnnouncements, allSchedule] = await Promise.all([
     getDashboardStats(),
     getAnnouncements(),
     getSchedule(),
   ]);
+  const announcements = allAnnouncements.filter((a) => matchQuery(q, a.judul, a.isi));
+  const schedule = allSchedule.filter((s) => matchQuery(q, s.mapel, s.guru, s.kelas, s.hari));
 
   return (
     <>
-      <Topbar title="Dashboard" />
+      <Topbar title="Dashboard" searchPlaceholder="Cari pengumuman, jadwal..." />
       <div className="p-6 space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <StatCard icon={Users} label="Jumlah Guru" value={stats.totalGuru} />

@@ -9,19 +9,28 @@ import EditClassForm from "@/components/dashboard/forms/EditClassForm";
 import { getClasses } from "@/lib/data/classes";
 import { getTeacherOptions } from "@/lib/data/teachers";
 import { deleteClass } from "@/lib/actions/classes";
+import { matchQuery } from "@/lib/utils/search";
 import type { Jenjang } from "@/lib/types";
 
 const jenjangList: Jenjang[] = ["Awaliyah", "Wustha", "Ulya"];
 
-export default async function KelasPage() {
-  const [classes, teacherOptions] = await Promise.all([getClasses(), getTeacherOptions()]);
+export default async function KelasPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const [allClasses, teacherOptions] = await Promise.all([getClasses(), getTeacherOptions()]);
+  const classes = allClasses.filter((c) => matchQuery(q, c.nama_kelas, c.jenjang, c.wali_kelas));
 
   return (
     <>
-      <Topbar title="Data Kelas" />
+      <Topbar title="Data Kelas" searchPlaceholder="Cari nama kelas, wali kelas..." />
       <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-black/50">{classes.length} kelas terdaftar</p>
+          <p className="text-sm text-black/50">
+            {classes.length} kelas{q ? ` ditemukan (dari ${allClasses.length})` : " terdaftar"}
+          </p>
           <AddPanel label="Tambah Kelas">
             <AddClassForm teacherOptions={teacherOptions} />
           </AddPanel>
@@ -61,7 +70,9 @@ export default async function KelasPage() {
         })}
 
         {classes.length === 0 && (
-          <p className="text-sm text-black/40">Belum ada kelas. Tambahkan lewat tombol di atas.</p>
+          <p className="text-sm text-black/40">
+            {q ? "Tidak ada kelas yang cocok dengan pencarian." : "Belum ada kelas. Tambahkan lewat tombol di atas."}
+          </p>
         )}
       </div>
     </>

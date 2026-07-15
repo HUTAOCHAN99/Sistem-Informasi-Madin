@@ -9,6 +9,7 @@ function revalidateStudentPaths() {
   revalidatePath("/dashboard/kelas");
   revalidatePath("/dashboard/absensi");
   revalidatePath("/dashboard/nilai");
+  revalidatePath("/dashboard/spp");
   revalidatePath("/dashboard");
   revalidatePath("/");
 }

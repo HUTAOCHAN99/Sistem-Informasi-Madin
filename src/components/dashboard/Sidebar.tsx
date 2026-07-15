@@ -16,6 +16,7 @@ import {
   Settings,
   Menu,
   X,
+  Wallet,
 } from "lucide-react";
 
 const NAV = [
@@ -26,6 +27,7 @@ const NAV = [
   { href: "/dashboard/jadwal", label: "Jadwal", icon: CalendarDays },
   { href: "/dashboard/absensi", label: "Absensi", icon: ClipboardCheck },
   { href: "/dashboard/nilai", label: "Nilai", icon: NotebookPen },
+  { href: "/dashboard/spp", label: "Pembayaran SPP", icon: Wallet },
   { href: "/dashboard/pengumuman", label: "Pengumuman", icon: Megaphone },
 ];
 

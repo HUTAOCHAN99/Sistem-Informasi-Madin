@@ -14,9 +14,11 @@ export type Column<T> = {
 export default function DataTable<T extends { id: string }>({
   columns,
   rows,
+  emptyMessage = "Belum ada data.",
 }: {
   columns: Column<T>[];
   rows: T[];
+  emptyMessage?: string;
 }) {
   return (
     <div className="bg-white rounded-xl2 border border-madin-line overflow-hidden">
@@ -46,7 +48,7 @@ export default function DataTable<T extends { id: string }>({
           {rows.length === 0 && (
             <tr>
               <td colSpan={columns.length} className="px-5 py-8 text-center text-black/40">
-                Belum ada data.
+                {emptyMessage}
               </td>
             </tr>
           )}

@@ -10,6 +10,7 @@ import EditGradeForm from "@/components/dashboard/forms/EditGradeForm";
 import { getGrades } from "@/lib/data/grades";
 import { getStudentOptions } from "@/lib/data/students";
 import { deleteGrade } from "@/lib/actions/grades";
+import { matchQuery } from "@/lib/utils/search";
 import type { GradeRow } from "@/lib/types";
 
 function nilaiAkhir(row: GradeRow) {
@@ -17,8 +18,14 @@ function nilaiAkhir(row: GradeRow) {
   return Math.round(row.harian * 0.3 + row.uts * 0.3 + row.uas * 0.4);
 }
 
-export default async function NilaiPage() {
-  const [grades, studentOptions] = await Promise.all([getGrades(), getStudentOptions()]);
+export default async function NilaiPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = searchParams.q ?? "";
+  const [allGrades, studentOptions] = await Promise.all([getGrades(), getStudentOptions()]);
+  const grades = allGrades.filter((g) => matchQuery(q, g.siswa, g.mapel));
 
   const columns: Column<GradeRow>[] = [
     { key: "siswa", header: "Santri" },
@@ -52,17 +59,19 @@ export default async function NilaiPage() {
 
   return (
     <>
-      <Topbar title="Nilai" />
+      <Topbar title="Nilai" searchPlaceholder="Cari nama santri, mapel..." />
       <div className="p-6 space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <p className="text-sm text-black/50">
-            Nilai akhir dihitung otomatis dari Harian (30%), UTS (30%), UAS (40%).
+            {q
+              ? `${grades.length} nilai ditemukan (dari ${allGrades.length}).`
+              : "Nilai akhir dihitung otomatis dari Harian (30%), UTS (30%), UAS (40%)."}
           </p>
           <AddPanel label="Tambah Nilai">
             <AddGradeForm studentOptions={studentOptions} />
           </AddPanel>
         </div>
-        <DataTable columns={columns} rows={grades} />
+        <DataTable columns={columns} rows={grades} emptyMessage={q ? "Tidak ada nilai yang cocok dengan pencarian." : "Belum ada data."} />
       </div>
     </>
   );
