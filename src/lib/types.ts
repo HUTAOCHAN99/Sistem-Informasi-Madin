@@ -77,6 +77,13 @@ export type Announcement = {
   tanggal: string;
 };
 
+export type GalleryItem = {
+  id: string;
+  caption: string;
+  foto_url: string;
+  urutan: number;
+};
+
 export type PaymentStatus = "Lunas" | "Belum Lunas";
 
 export type PaymentRow = {

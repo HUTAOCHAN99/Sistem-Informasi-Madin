@@ -17,6 +17,7 @@ import {
   Menu,
   X,
   Wallet,
+  Image as ImageIcon,
 } from "lucide-react";
 
 const NAV = [
@@ -29,6 +30,7 @@ const NAV = [
   { href: "/dashboard/nilai", label: "Nilai", icon: NotebookPen },
   { href: "/dashboard/spp", label: "Pembayaran SPP", icon: Wallet },
   { href: "/dashboard/pengumuman", label: "Pengumuman", icon: Megaphone },
+  { href: "/dashboard/galeri", label: "Galeri", icon: ImageIcon },
 ];
 
 function Brand() {

@@ -11,6 +11,7 @@ import { getSupabaseServer } from "@/lib/supabase/server";
 
 export const TEACHER_PHOTO_BUCKET = "guru-photos";
 export const STUDENT_PHOTO_BUCKET = "santri-photos";
+export const GALLERY_PHOTO_BUCKET = "gallery-photos";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
@@ -83,4 +84,12 @@ export async function uploadStudentPhoto(file: File): Promise<string> {
 
 export async function deleteStudentPhoto(url: string | null | undefined) {
   return deletePhoto(STUDENT_PHOTO_BUCKET, url);
+}
+
+export async function uploadGalleryPhoto(file: File): Promise<string> {
+  return uploadPhoto(GALLERY_PHOTO_BUCKET, file);
+}
+
+export async function deleteGalleryPhoto(url: string | null | undefined) {
+  return deletePhoto(GALLERY_PHOTO_BUCKET, url);
 }

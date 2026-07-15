@@ -1,23 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { ZoomIn } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ZoomIn, ChevronDown, ChevronUp } from "lucide-react";
 import ImageLightbox from "./ImageLightbox";
+import type { GalleryItem } from "@/lib/types";
 
-// Cara pakai:
-// 1. Taruh file foto di folder /public/gallery/ dengan nama persis seperti di bawah
-//    (misalnya public/gallery/mengaji.jpg).
-// 2. Ganti teks "caption" jika perlu — itu yang tampil di bawah foto.
-// 3. Kalau file belum ada / nama tidak cocok, tile otomatis kembali ke
-//    tampilan placeholder warna supaya layout tidak rusak.
-const TILES = [
-  { file: "mengaji.jpg", caption: "Kegiatan mengaji sore", tone: "bg-madin-navy" },
-  { file: "ibadah.jpg", caption: "Praktik ibadah bersama", tone: "bg-madin-teal" },
-  { file: "kelas-awaliyah.jpg", caption: "Suasana kelas Awaliyah", tone: "bg-madin-orange" },
-  { file: "kajian-akhlak.jpg", caption: "Kajian akhlak santri", tone: "bg-madin-navySoft" },
-  { file: "wisuda.jpg", caption: "Wisuda santri Ulya", tone: "bg-madin-teal" },
-  { file: "hari-besar.jpg", caption: "Kegiatan hari besar Islam", tone: "bg-madin-navy" },
+// Konten galeri sekarang dinamis: dikelola lewat Dashboard > Galeri (CRUD +
+// upload foto ke Supabase Storage), bukan lagi file statis di /public/gallery.
+// Kalau fotonya gagal dimuat (mis. URL rusak), tile otomatis kembali ke
+// tampilan placeholder warna supaya layout tidak rusak.
+
+const TONES = [
+  "bg-madin-navy",
+  "bg-madin-teal",
+  "bg-madin-orange",
+  "bg-madin-navySoft",
+  "bg-madin-teal",
+  "bg-madin-navy",
 ];
+
+const PREVIEW_COUNT = 6;
 
 function Motif() {
   return (
@@ -31,10 +33,17 @@ function Motif() {
   );
 }
 
-function GalleryTile({ file, caption, tone }: (typeof TILES)[number]) {
+function GalleryTile({
+  src,
+  caption,
+  tone,
+}: {
+  src: string;
+  caption: string;
+  tone: string;
+}) {
   const [broken, setBroken] = useState(false);
   const [preview, setPreview] = useState(false);
-  const src = `/gallery/${file}`;
 
   return (
     <>
@@ -79,7 +88,16 @@ function GalleryTile({ file, caption, tone }: (typeof TILES)[number]) {
   );
 }
 
-export default function Gallery() {
+export default function Gallery({ items }: { items: GalleryItem[] }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const visibleItems = useMemo(
+    () => (expanded ? items : items.slice(0, PREVIEW_COUNT)),
+    [items, expanded]
+  );
+
+  const hasMore = items.length > PREVIEW_COUNT;
+
   return (
     <section id="galeri" className="bg-madin-cream py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">
@@ -90,15 +108,50 @@ export default function Gallery() {
           Sekilas suasana kegiatan madrasah
         </h2>
         <p className="text-black/50 text-sm mt-3 max-w-xl">
-          Foto kegiatan akan segera diperbarui — ruang di bawah ini menampilkan
-          gambaran sementara sampai foto asli ditambahkan.
+          Dokumentasi kegiatan santri dan madrasah, diperbarui langsung oleh
+          pengurus lewat dashboard.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-          {TILES.map((t) => (
-            <GalleryTile key={t.file} file={t.file} caption={t.caption} tone={t.tone} />
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+              {visibleItems.map((item, i) => (
+                <GalleryTile
+                  key={item.id}
+                  src={item.foto_url}
+                  caption={item.caption || "Kegiatan madrasah"}
+                  tone={TONES[i % TONES.length]}
+                />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center mt-8">
+                <button
+                  type="button"
+                  onClick={() => setExpanded((v) => !v)}
+                  className="flex items-center gap-2 bg-white border border-madin-line text-madin-navy text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-madin-navy hover:text-white hover:border-madin-navy transition-colors"
+                >
+                  {expanded ? (
+                    <>
+                      Tampilkan Lebih Sedikit
+                      <ChevronUp className="w-4 h-4" />
+                    </>
+                  ) : (
+                    <>
+                      Lihat Semua Foto ({items.length})
+                      <ChevronDown className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-black/40 mt-10">
+            Foto kegiatan akan segera ditambahkan oleh pengurus madrasah.
+          </p>
+        )}
       </div>
     </section>
   );

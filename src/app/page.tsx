@@ -17,6 +17,7 @@ import { getDashboardStats } from "@/lib/data/stats";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { getSchedule } from "@/lib/data/schedule";
 import { getTeachers } from "@/lib/data/teachers";
+import { getGalleryItems } from "@/lib/data/gallery";
 import { isSupabaseConfigured } from "@/lib/supabase/server";
 
 // Kalau env Supabase belum diisi, tampilkan halaman tetap jalan dengan data
@@ -29,21 +30,23 @@ async function safeLoad() {
       announcements: [],
       schedule: [],
       teachers: [],
+      gallery: [],
     };
   }
 
-  const [stats, announcements, schedule, teachers] = await Promise.all([
+  const [stats, announcements, schedule, teachers, gallery] = await Promise.all([
     getDashboardStats(),
     getAnnouncements(),
     getSchedule(),
     getTeachers(),
+    getGalleryItems(),
   ]);
 
-  return { stats, announcements, schedule, teachers };
+  return { stats, announcements, schedule, teachers, gallery };
 }
 
 export default async function Home() {
-  const { stats, announcements, schedule, teachers } = await safeLoad();
+  const { stats, announcements, schedule, teachers, gallery } = await safeLoad();
 
   return (
     <main className="min-h-screen">
@@ -70,7 +73,7 @@ export default async function Home() {
         <Announcements announcements={announcements.slice(0, 3)} />
       </FadeInSection>
       <FadeInSection>
-        <Gallery />
+        <Gallery items={gallery} />
       </FadeInSection>
       <FadeInSection>
         <Teachers teachers={teachers} />
