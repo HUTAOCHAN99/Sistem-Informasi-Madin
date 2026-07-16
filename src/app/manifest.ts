@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Madrasah Diniyah Nurul Huda Kebondalem",
-    short_name: "Madin Nurul Huda",
+    name: "Sistem Terintegrasi Madrasah Diniyah Nurul Huda Kebondalem",
+    short_name: "SITEGAS",
     description:
       "Profil dan sistem informasi Madrasah Diniyah Takmiliyah Nurul Huda Kebondalem.",
     start_url: "/",
