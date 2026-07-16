@@ -29,14 +29,15 @@ const VALUES = [
   },
 ];
 
-const ABOUT_SRC = "/about/madrasah.jpg";
+const ABOUT_SRC_DEFAULT = "/about/madrasah.jpg";
 const ABOUT_ALT = "Suasana Madrasah Diniyah";
 
-// Cara pakai: taruh foto di /public/about/madrasah.jpg (foto gedung,
-// halaman, atau kegiatan belajar). Kalau file belum ada, otomatis
-// kembali ke motif geometris seperti sekarang. Foto bisa diklik untuk
+// Foto Tentang bisa diganti admin lewat menu "Pengaturan Tampilan" di
+// dashboard (disimpan di Supabase Storage). Kalau belum pernah diganti,
+// otomatis pakai /public/about/madrasah.jpg, dan kalau file itu pun belum
+// ada, kembali ke motif geometris seperti sekarang. Foto bisa diklik untuk
 // melihat versi utuhnya (tidak terpotong) lewat pratinjau layar penuh.
-function AboutPhoto() {
+function AboutPhoto({ src }: { src: string }) {
   const [broken, setBroken] = useState(false);
   const [preview, setPreview] = useState(false);
 
@@ -64,7 +65,7 @@ function AboutPhoto() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={ABOUT_SRC}
+          src={src}
           alt={ABOUT_ALT}
           onError={() => setBroken(true)}
           className="w-full h-full object-cover"
@@ -75,13 +76,14 @@ function AboutPhoto() {
       </button>
 
       {preview && (
-        <ImageLightbox src={ABOUT_SRC} alt={ABOUT_ALT} onClose={() => setPreview(false)} />
+        <ImageLightbox src={src} alt={ABOUT_ALT} onClose={() => setPreview(false)} />
       )}
     </>
   );
 }
 
-export default function About() {
+export default function About({ aboutImageUrl }: { aboutImageUrl?: string | null } = {}) {
+  const aboutSrc = aboutImageUrl || ABOUT_SRC_DEFAULT;
   return (
     <section id="tentang" className="bg-madin-cream py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">
@@ -100,7 +102,7 @@ export default function About() {
             </p>
           </div>
 
-          <AboutPhoto />
+          <AboutPhoto src={aboutSrc} />
         </div>
 
         <div className="grid sm:grid-cols-3 gap-5 mt-12">

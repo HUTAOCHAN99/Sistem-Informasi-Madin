@@ -116,3 +116,14 @@ export type DashboardStats = {
 
 /** Untuk dropdown pilihan di form (mis. pilih guru / pilih kelas). */
 export type SelectOption = { id: string; label: string };
+
+/**
+ * Foto tampilan landing page (Hero, Tentang, Lokasi) yang bisa diatur admin
+ * lewat halaman Pengaturan Tampilan. Nilai null berarti pakai foto statis
+ * bawaan di /public (lihat komponen landing masing-masing).
+ */
+export type SiteSettings = {
+  hero_image_url: string | null;
+  about_image_url: string | null;
+  location_image_url: string | null;
+};

@@ -22,14 +22,17 @@ const INFO = [
   },
 ];
 
-const BUILDING_SRC = "/lokasi/gedung.jpg";
+const BUILDING_SRC_DEFAULT = "/lokasi/gedung.jpg";
 const BUILDING_ALT = "Gedung Madrasah Diniyah";
 
-// Cara pakai: taruh foto gedung/gerbang di /public/lokasi/gedung.jpg.
-// Kalau file belum ada, kartu foto ini otomatis disembunyikan dan
-// tata letak kembali seperti semula (info + peta saja). Foto bisa diklik
-// untuk melihat versi utuhnya (tidak terpotong) lewat pratinjau layar penuh.
-function BuildingPhoto() {
+// Foto gedung/lokasi bisa diganti admin lewat menu "Pengaturan Tampilan" di
+// dashboard (disimpan di Supabase Storage). Kalau belum pernah diganti,
+// otomatis pakai /public/lokasi/gedung.jpg. Kalau tidak ada foto sama
+// sekali (baik kustom maupun file statis), kartu foto ini otomatis
+// disembunyikan dan tata letak kembali seperti semula (info + peta saja).
+// Foto bisa diklik untuk melihat versi utuhnya (tidak terpotong) lewat
+// pratinjau layar penuh.
+function BuildingPhoto({ src }: { src: string }) {
   const [broken, setBroken] = useState(false);
   const [preview, setPreview] = useState(false);
 
@@ -45,7 +48,7 @@ function BuildingPhoto() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={BUILDING_SRC}
+          src={src}
           alt={BUILDING_ALT}
           onError={() => setBroken(true)}
           className="w-full h-full object-cover"
@@ -56,13 +59,16 @@ function BuildingPhoto() {
       </button>
 
       {preview && (
-        <ImageLightbox src={BUILDING_SRC} alt={BUILDING_ALT} onClose={() => setPreview(false)} />
+        <ImageLightbox src={src} alt={BUILDING_ALT} onClose={() => setPreview(false)} />
       )}
     </>
   );
 }
 
-export default function Location() {
+export default function Location({
+  locationImageUrl,
+}: { locationImageUrl?: string | null } = {}) {
+  const buildingSrc = locationImageUrl || BUILDING_SRC_DEFAULT;
   return (
     <section id="lokasi" className="bg-madin-cream py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-5">
@@ -75,7 +81,7 @@ export default function Location() {
 
         <div className="grid lg:grid-cols-[1fr_1.2fr] gap-6 mt-10">
           <div className="space-y-4">
-            <BuildingPhoto />
+            <BuildingPhoto src={buildingSrc} />
             {INFO.map((item) => (
               <div
                 key={item.label}

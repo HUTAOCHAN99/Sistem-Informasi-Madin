@@ -4,14 +4,15 @@ import { useState } from "react";
 import { BookOpen, Sparkles, ZoomIn } from "lucide-react";
 import ImageLightbox from "./ImageLightbox";
 
-const HERO_SRC = "/hero/madrasah.jpg";
+const HERO_SRC_DEFAULT = "/hero/madrasah.jpg";
 const HERO_ALT = "Suasana Madrasah Diniyah";
 
-// Cara pakai: taruh foto di /public/hero/madrasah.jpg (foto gedung atau
-// suasana belajar). Kalau file belum ada, otomatis kembali ke motif
-// geometris seperti sekarang. Foto bisa diklik untuk melihat versi utuhnya
-// (tidak terpotong) lewat pratinjau layar penuh.
-function HeroPhoto() {
+// Foto Hero bisa diganti admin lewat menu "Pengaturan Tampilan" di
+// dashboard (disimpan di Supabase Storage). Kalau belum pernah diganti,
+// otomatis pakai /public/hero/madrasah.jpg, dan kalau file itu pun belum
+// ada, kembali ke motif geometris seperti sekarang. Foto bisa diklik untuk
+// melihat versi utuhnya (tidak terpotong) lewat pratinjau layar penuh.
+function HeroPhoto({ src }: { src: string }) {
   const [broken, setBroken] = useState(false);
   const [preview, setPreview] = useState(false);
 
@@ -39,7 +40,7 @@ function HeroPhoto() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={HERO_SRC}
+          src={src}
           alt={HERO_ALT}
           onError={() => setBroken(true)}
           className="w-full h-full object-cover"
@@ -50,13 +51,14 @@ function HeroPhoto() {
       </button>
 
       {preview && (
-        <ImageLightbox src={HERO_SRC} alt={HERO_ALT} onClose={() => setPreview(false)} />
+        <ImageLightbox src={src} alt={HERO_ALT} onClose={() => setPreview(false)} />
       )}
     </>
   );
 }
 
-export default function Hero() {
+export default function Hero({ heroImageUrl }: { heroImageUrl?: string | null } = {}) {
+  const heroSrc = heroImageUrl || HERO_SRC_DEFAULT;
   return (
     <section id="top" className="relative bg-madin-navy pt-32 pb-24 overflow-hidden">
       {/* Geometric motif watermark */}
@@ -115,7 +117,7 @@ export default function Hero() {
 
         <div className="relative">
           <div className="rounded-xl2 bg-madin-navySoft border border-white/10 overflow-hidden">
-            <HeroPhoto />
+            <HeroPhoto src={heroSrc} />
             <div className="p-6 sm:p-8">
               <p className="font-display text-white/90 text-lg sm:text-xl leading-snug">
                 &ldquo;Sebaik-baik kalian adalah yang mempelajari Al-Qur&apos;an dan

@@ -18,6 +18,7 @@ import { getAnnouncements } from "@/lib/data/announcements";
 import { getSchedule } from "@/lib/data/schedule";
 import { getTeachers } from "@/lib/data/teachers";
 import { getGalleryItems } from "@/lib/data/gallery";
+import { getSiteSettings } from "@/lib/data/settings";
 import { isSupabaseConfigured } from "@/lib/supabase/server";
 
 // Kalau env Supabase belum diisi, tampilkan halaman tetap jalan dengan data
@@ -31,31 +32,33 @@ async function safeLoad() {
       schedule: [],
       teachers: [],
       gallery: [],
+      settings: { hero_image_url: null, about_image_url: null, location_image_url: null },
     };
   }
 
-  const [stats, announcements, schedule, teachers, gallery] = await Promise.all([
+  const [stats, announcements, schedule, teachers, gallery, settings] = await Promise.all([
     getDashboardStats(),
     getAnnouncements(),
     getSchedule(),
     getTeachers(),
     getGalleryItems(),
+    getSiteSettings(),
   ]);
 
-  return { stats, announcements, schedule, teachers, gallery };
+  return { stats, announcements, schedule, teachers, gallery, settings };
 }
 
 export default async function Home() {
-  const { stats, announcements, schedule, teachers, gallery } = await safeLoad();
+  const { stats, announcements, schedule, teachers, gallery, settings } = await safeLoad();
 
   return (
     <main className="min-h-screen">
       <Navbar />
       <FadeInSection>
-        <Hero />
+        <Hero heroImageUrl={settings.hero_image_url} />
       </FadeInSection>
       <FadeInSection>
-        <About />
+        <About aboutImageUrl={settings.about_image_url} />
       </FadeInSection>
       <FadeInSection>
         <Stats stats={stats} />
@@ -79,7 +82,7 @@ export default async function Home() {
         <Teachers teachers={teachers} />
       </FadeInSection>
       <FadeInSection>
-        <Location />
+        <Location locationImageUrl={settings.location_image_url} />
       </FadeInSection>
       <Footer />
     </main>

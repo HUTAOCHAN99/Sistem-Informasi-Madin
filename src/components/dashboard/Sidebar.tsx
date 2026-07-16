@@ -31,6 +31,7 @@ const NAV = [
   { href: "/dashboard/spp", label: "Pembayaran SPP", icon: Wallet },
   { href: "/dashboard/pengumuman", label: "Pengumuman", icon: Megaphone },
   { href: "/dashboard/galeri", label: "Galeri", icon: ImageIcon },
+  { href: "/dashboard/pengaturan", label: "Pengaturan Tampilan", icon: Settings },
 ];
 
 function Brand() {

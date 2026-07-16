@@ -12,6 +12,7 @@ import { getSupabaseServer } from "@/lib/supabase/server";
 export const TEACHER_PHOTO_BUCKET = "guru-photos";
 export const STUDENT_PHOTO_BUCKET = "santri-photos";
 export const GALLERY_PHOTO_BUCKET = "gallery-photos";
+export const SITE_PHOTO_BUCKET = "site-photos";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
@@ -92,4 +93,17 @@ export async function uploadGalleryPhoto(file: File): Promise<string> {
 
 export async function deleteGalleryPhoto(url: string | null | undefined) {
   return deletePhoto(GALLERY_PHOTO_BUCKET, url);
+}
+
+/**
+ * Foto tampilan landing page (Hero, Tentang, Lokasi) yang bisa diganti admin
+ * lewat halaman Pengaturan Tampilan di dashboard. Disimpan di bucket publik
+ * terpisah supaya tidak tercampur dengan foto guru/santri/galeri.
+ */
+export async function uploadSitePhoto(file: File): Promise<string> {
+  return uploadPhoto(SITE_PHOTO_BUCKET, file);
+}
+
+export async function deleteSitePhoto(url: string | null | undefined) {
+  return deletePhoto(SITE_PHOTO_BUCKET, url);
 }
