@@ -41,7 +41,7 @@ function Brand() {
         <Image src="/icon.png" alt="Madin icon" width={40} height={40} className="w-full h-full object-contain" />
       </div>
       <div className="min-w-0">
-        <Image src="/madin-teks.png" alt="Madin" width={96} height={24} className="h-5 w-auto" />
+        <Image src="/madin-teks.png" alt="Madin" width={96} height={24} className="h-5 w-auto brightness-0 invert" />
         <p className="text-[11px] text-white/50 leading-tight mt-0.5">Sistem Informasi</p>
       </div>
     </div>
