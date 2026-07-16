@@ -93,7 +93,7 @@ export default async function SppPage({
     <>
       <Topbar title="Pembayaran SPP" searchPlaceholder="Cari nama santri, kelas..." />
       <div className="p-6 space-y-6">
-        <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <p className="text-sm font-medium text-madin-navy">
               Periode {namaBulan(bulan)} {tahun}
@@ -102,7 +102,7 @@ export default async function SppPage({
               Data pembayaran SPP santri per bulan.
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <SppPeriodPicker bulan={bulan} tahun={tahun} />
             <CetakSppButton bulan={bulan} tahun={tahun} q={q} />
             <AddPanel label="Tambah Pembayaran">
@@ -111,7 +111,7 @@ export default async function SppPage({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <StatCard icon={Users} label="Santri Tercatat" value={summary.totalSantri} />
           <StatCard icon={CheckCircle2} label="Sudah Lunas" value={summary.jumlahLunas} />
           <StatCard icon={Wallet} label="Belum Lunas" value={summary.jumlahBelumLunas} />

@@ -15,7 +15,7 @@ export default function SppPeriodPicker({ bulan, tahun }: { bulan: number; tahun
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <select
         value={bulan}
         onChange={(e) => go(Number(e.target.value), tahun)}
