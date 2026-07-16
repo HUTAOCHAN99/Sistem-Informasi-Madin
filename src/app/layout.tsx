@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
+import RegisterServiceWorker from "@/components/register-sw";
 
 const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -33,6 +34,14 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
 
+  // iOS "Add to Home Screen" pakai meta tag ini, bukan manifest.json
+  // (Safari dukungannya masih parsial untuk Web App Manifest).
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Madin Nurul Huda",
+  },
+
   openGraph: {
     title: "Madrasah Diniyah Nurul Huda Kebondalem",
     description:
@@ -57,10 +66,17 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#092A0E",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
       <body className={`${display.variable} ${body.variable} font-body bg-madin-cream text-madin-navy`}>
+        <RegisterServiceWorker />
         {children}
       </body>
     </html>
