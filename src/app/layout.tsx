@@ -16,38 +16,44 @@ const BASE_URL = "https://madin-nurul-huda-kebondalem.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+
   title: {
     default: "Madrasah Diniyah Nurul Huda Kebondalem — Sistem Informasi",
     template: "%s | Madin Nurul Huda Kebondalem",
   },
+
   description:
-    "Profil dan sistem informasi Madrasah Diniyah Takmiliyah Nurul Huda Kebondalem: profil, jadwal pengajian, guru, galeri kegiatan, dan pengumuman terbaru.",
-  keywords: [
-    "Madrasah Diniyah Nurul Huda",
-    "Madin Kebondalem",
-    "Madrasah Diniyah Takmiliyah",
-    "sistem informasi madrasah",
-  ],
-  alternates: {
-    canonical: BASE_URL,
+    "Profil dan sistem informasi Madrasah Diniyah Takmiliyah Nurul Huda Kebondalem.",
+
+  applicationName: "Madrasah Diniyah Nurul Huda",
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
+
   openGraph: {
     title: "Madrasah Diniyah Nurul Huda Kebondalem",
     description:
       "Profil dan sistem informasi Madrasah Diniyah Takmiliyah Nurul Huda Kebondalem.",
     url: BASE_URL,
-    siteName: "Madin Nurul Huda Kebondalem",
+    siteName: "Madrasah Diniyah Nurul Huda",
     locale: "id_ID",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Madrasah Diniyah Nurul Huda Kebondalem",
+      },
+    ],
   },
+
   robots: {
     index: true,
     follow: true,
-  },
-  verification: {
-    // Tempel kode dari Google Search Console (metode "HTML tag") di sini, contoh:
-    // google: "abcXYZ123isiVerifikasiDariGoogle",
-    google: undefined,
   },
 };
 
