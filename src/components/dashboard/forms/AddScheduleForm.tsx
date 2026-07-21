@@ -34,7 +34,7 @@ export default function AddScheduleForm({
       </div>
       <div>
         <label className={label}>Mata Pelajaran</label>
-        <input name="mapel" required placeholder="Fiqih" className={input} />
+        <input name="mapel" placeholder="Fiqih" className={input} />
       </div>
       <div>
         <label className={label}>Guru</label>
