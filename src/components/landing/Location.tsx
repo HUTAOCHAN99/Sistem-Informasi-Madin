@@ -13,12 +13,12 @@ const INFO = [
   {
     icon: Clock3,
     label: "Jam Belajar",
-    value: "Senin - Kamis, pukul 16.00 - 17.45 WIB",
+    value: "Senin - Rabu dan Jumat - Minggu, pukul 18.00 - 20.00 WIB",
   },
   {
     icon: Phone,
     label: "Kontak",
-    value: "0812-0000-0000 (Sekretariat Madrasah)",
+    value: "0821-4368-294 (Sekretariat Madrasah)",
   },
 ];
 

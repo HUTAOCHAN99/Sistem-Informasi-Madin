@@ -15,7 +15,7 @@ const LEVELS = [
     step: "Tahap 3",
     name: "Ulya",
     duration: "",
-    desc: "Hafalan, kajian kitab lanjutan, dan pemahaman mendalam tentang tauhid dan fiqih.",
+    desc: "HafalanJam, kajian kitab lanjutan, dan pemahaman mendalam tentang tauhid dan fiqih.",
   },
 ];
 
