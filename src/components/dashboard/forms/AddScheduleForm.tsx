@@ -30,7 +30,7 @@ export default function AddScheduleForm({
       </div>
       <div>
         <label className={label}>Jam</label>
-        <input name="jam" required placeholder="16.00 - 16.45" className={input} />
+        <input name="jam" placeholder="16.00 - 16.45" className={input} />
       </div>
       <div>
         <label className={label}>Mata Pelajaran</label>
