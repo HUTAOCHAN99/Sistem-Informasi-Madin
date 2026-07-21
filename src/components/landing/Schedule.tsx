@@ -6,6 +6,17 @@ import type { Hari, ScheduleItem } from "@/lib/types";
 
 const HARI_ORDER: Hari[] = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
+const SPECIAL_THURSDAY_ITEM: ScheduleItem = {
+  id: "libur-kamis",
+  hari: "Kamis",
+  jam: "Sepanjang Hari",
+  mapel: "Libur Khusus",
+  guru_id: null,
+  guru: "Pondok Pesantren",
+  kelas_id: null,
+  kelas: "Semua Santri",
+};
+
 type DayGroup = {
   hari: Hari;
   items: ScheduleItem[];
@@ -13,9 +24,15 @@ type DayGroup = {
 
 export default function Schedule({ schedule }: { schedule: ScheduleItem[] }) {
   const days = useMemo<DayGroup[]>(() => {
+    const enrichedSchedule = [...schedule];
+
+    if (!enrichedSchedule.some((item) => item.id === SPECIAL_THURSDAY_ITEM.id || (item.hari === "Kamis" && item.mapel === "Libur Khusus"))) {
+      enrichedSchedule.push(SPECIAL_THURSDAY_ITEM);
+    }
+
     return HARI_ORDER.map((hari) => ({
       hari,
-      items: schedule.filter((s) => s.hari === hari),
+      items: enrichedSchedule.filter((s) => s.hari === hari),
     })).filter((d) => d.items.length > 0);
   }, [schedule]);
 
