@@ -58,13 +58,7 @@ export default function Schedule({ schedule }: { schedule: ScheduleItem[] }) {
             <p className="text-madin-teal text-xs font-semibold tracking-wide uppercase">
               Jadwal Belajar
             </p>
-            <h2 className="font-display font-bold text-madin-navy text-2xl sm:text-3xl mt-3">
-              Kegiatan belajar sore, Senin - Kamis
-            </h2>
           </div>
-          <p className="text-black/50 text-sm max-w-xs">
-            Jadwal lengkap per kelas dapat dilihat oleh wali santri melalui sistem informasi.
-          </p>
         </div>
 
         {days.length === 0 ? (

@@ -2,20 +2,20 @@ const LEVELS = [
   {
     step: "Tahap 1",
     name: "Awaliyah",
-    duration: "Kelas 1 - 2",
-    desc: "Pengenalan huruf hijaiyah, dasar membaca Al-Qur'an (iqro), dan adab dasar sehari-hari.",
+    duration: "Kelas 1 - 4",
+    desc: "Pengenalan huruf hijaiyah, dasar membaca Al-Qur'an (Yanbu'a),doa-doa, dan adab dasar sehari-hari.",
   },
   {
     step: "Tahap 2",
     name: "Wustha",
-    duration: "Kelas 3 - 4",
-    desc: "Kelancaran membaca Al-Qur'an, dasar fiqih ibadah, dan hafalan surat-surat pendek.",
+    duration: "Kelas 5 - 7",
+    desc: "Kelancaran membaca Al-Qur'an, dasar fiqih ibadah, dan kajian kitab dasar.",
   },
   {
     step: "Tahap 3",
     name: "Ulya",
-    duration: "Kelas 5 - 6",
-    desc: "Pendalaman tauhid, fiqih muamalah, serta latihan membaca kitab dan bahasa Arab dasar.",
+    duration: "",
+    desc: "Hafalan, kajian kitab lanjutan, dan pemahaman mendalam tentang tauhid dan fiqih.",
   },
 ];
 

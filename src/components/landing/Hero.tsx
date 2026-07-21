@@ -94,8 +94,8 @@ export default function Hero({ heroImageUrl }: { heroImageUrl?: string | null } 
 
           <p className="text-white/60 text-[15px] sm:text-base leading-relaxed mt-5 max-w-lg">
             Madrasah kami membimbing santri mempelajari Al-Qur&apos;an, fiqih, akhlak,
-            dan bahasa Arab dengan suasana belajar yang hangat, tertib, dan
-            berjenjang dari Awaliyah hingga Ulya.
+            dan tauhid dengan suasana belajar yang hangat, tertib, dan
+            berjenjang dari kelas Awaliyah,Wustha,dan Ulya.
           </p>
 
           <div className="flex flex-wrap gap-3 mt-8">
