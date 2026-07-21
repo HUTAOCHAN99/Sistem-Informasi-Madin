@@ -12,7 +12,7 @@ const SPECIAL_THURSDAY_ITEM: ScheduleItem = {
   jam: "Sepanjang Hari",
   mapel: "Libur Khusus",
   guru_id: null,
-  guru: "Pondok Pesantren",
+  guru: "",
   kelas_id: null,
   kelas: "Semua Santri",
 };
