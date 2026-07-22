@@ -5,7 +5,7 @@ import StatCard from "@/components/dashboard/StatCard";
 import { Users, GraduationCap, School, Megaphone, CalendarDays } from "lucide-react";
 import { getDashboardStats } from "@/lib/data/stats";
 import { getAnnouncements } from "@/lib/data/announcements";
-import { getSchedule } from "@/lib/data/schedule";
+import { getJadwalTerdekat } from "@/lib/data/schedule";
 import { matchQuery } from "@/lib/utils/search";
 
 export default async function DashboardPage({
@@ -17,7 +17,7 @@ export default async function DashboardPage({
   const [stats, allAnnouncements, allSchedule] = await Promise.all([
     getDashboardStats(),
     getAnnouncements(),
-    getSchedule(),
+    getJadwalTerdekat(),
   ]);
   const announcements = allAnnouncements.filter((a) => matchQuery(q, a.judul, a.isi));
   const schedule = allSchedule.filter((s) => matchQuery(q, s.mapel, s.guru, s.kelas, s.hari));

@@ -61,3 +61,79 @@ export function namaHariIni(): Hari {
 
   return map[hariEn];
 }
+
+/** Jam sekarang (menit sejak tengah malam) di timezone Asia/Jakarta. */
+function menitSekarangJakarta(): number {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Jakarta",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+
+  const jam = Number(parts.find((p) => p.type === "hour")?.value ?? "0");
+  const menit = Number(parts.find((p) => p.type === "minute")?.value ?? "0");
+  return jam * 60 + menit;
+}
+
+/**
+ * Ambil jam mulai dari field `jam` (mis. "16.00 - 16.45" atau "07:00") dan
+ * ubah jadi menit sejak tengah malam. Field ini teks bebas yang diisi admin
+ * (lihat AddScheduleForm), jadi bisa pakai titik atau titik dua sebagai
+ * pemisah jam:menit. Kalau tidak ada pola jam yang cocok (mis. diisi teks
+ * seperti "Sepanjang Hari"), return null — dianggap "tidak diketahui".
+ */
+function jamMulaiKeMenit(jam: string): number | null {
+  const match = jam.match(/(\d{1,2})[.:](\d{2})/);
+  if (!match) return null;
+
+  const jamNum = Number(match[1]);
+  const menitNum = Number(match[2]);
+  if (Number.isNaN(jamNum) || Number.isNaN(menitNum)) return null;
+
+  return jamNum * 60 + menitNum;
+}
+
+/**
+ * Jadwal terdekat dari waktu sekarang (bukan sekadar urut Senin→Minggu
+ * seperti `getSchedule`). Logikanya:
+ *
+ * 1. Hitung "jarak hari" tiap jadwal dari hari ini, berputar maju secara
+ *    siklis (hari ini = 0, besok = 1, ..., 6 hari lagi = 6).
+ * 2. Untuk jadwal di hari ini juga, kalau jam mulainya sudah lewat jam
+ *    sekarang, jarak harinya didorong +7 — dianggap baru terjadi lagi
+ *    minggu depan, supaya tidak nongol di urutan teratas padahal sudah
+ *    selesai.
+ * 3. Di dalam hari yang sama, diurutkan dari jam mulai paling awal.
+ * 4. Kalau jam tidak bisa di-parse (teks bebas / non-standar), jadwal itu
+ *    tetap ditampilkan tapi diletakkan paling akhir di hari itu — karena
+ *    tidak bisa dipastikan sudah lewat atau belum, tidak diberi prioritas.
+ *
+ * Return seluruh jadwal terurut (tidak dipotong); pemanggil yang menentukan
+ * mau ambil berapa banyak (mis. `.slice(0, 5)`).
+ */
+export async function getJadwalTerdekat(): Promise<ScheduleItem[]> {
+  const semua = await getSchedule();
+
+  const hariIni = namaHariIni();
+  const indexHariIni = HARI_ORDER.indexOf(hariIni);
+  const menitSekarang = menitSekarangJakarta();
+
+  const withRank = semua.map((item) => {
+    const menitMulai = jamMulaiKeMenit(item.jam);
+    let jarakHari = (HARI_ORDER.indexOf(item.hari) - indexHariIni + 7) % 7;
+
+    if (jarakHari === 0 && menitMulai !== null && menitMulai < menitSekarang) {
+      jarakHari += 7; // sudah lewat hari ini -> hitung dari minggu depan
+    }
+
+    return { item, jarakHari, menitMulai: menitMulai ?? Infinity };
+  });
+
+  withRank.sort((a, b) => {
+    if (a.jarakHari !== b.jarakHari) return a.jarakHari - b.jarakHari;
+    return a.menitMulai - b.menitMulai;
+  });
+
+  return withRank.map((r) => r.item);
+}
