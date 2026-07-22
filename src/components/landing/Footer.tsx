@@ -36,6 +36,29 @@ export default function Footer() {
               Membina santri mendalami Al-Qur&apos;an, fiqih, dan akhlak sejak dini,
               berjenjang dan berkesinambungan.
             </p>
+
+            <div className="mt-5">
+              <p className="text-white/40 text-xs font-semibold uppercase tracking-wide">
+                Ikuti Kami
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {[
+                  { label: "Instagram", href: "https://instagram.com" },
+                  // { label: "Facebook", href: "https://facebook.com" },
+                  // { label: "YouTube", href: "https://youtube.com" },
+                ].map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    {social.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div>
@@ -73,7 +96,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/40 text-xs">
-            © {new Date().getFullYear()} Madrasah Diniyah Takmiliyah. Seluruh hak cipta dilindungi.
+            © {new Date().getFullYear()} Madrasah Diniyah Nurul Huda. Seluruh hak cipta dilindungi.
           </p>
           <Link
             href="/dashboard"
