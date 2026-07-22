@@ -7,14 +7,14 @@ const HARI_VALID = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Mingg
 
 export async function createSchedule(formData: FormData) {
   const hari = String(formData.get("hari") ?? "").trim();
-  const jam = String(formData.get("jam") ?? "").trim();
-  const mapel = String(formData.get("mapel") ?? "").trim();
+  const jam = String(formData.get("jam") ?? "").trim() || null;
+  const mapel = String(formData.get("mapel") ?? "").trim() || null;
   const guru_id = String(formData.get("guru_id") ?? "").trim() || null;
   const kelas_id = String(formData.get("kelas_id") ?? "").trim() || null;
 
   if (!HARI_VALID.includes(hari)) throw new Error("Hari tidak valid.");
-  if (!jam) throw new Error("Jam wajib diisi, contoh: 16.00 - 16.45");
-  if (!mapel) throw new Error("Mata pelajaran wajib diisi.");
+  // Jam, mata pelajaran, guru, dan kelas semuanya opsional (boleh kosong).
+  // Kolom yang kosong tidak akan ditampilkan di jadwal landing page.
 
   const supabase = getSupabaseServer();
   const { error } = await supabase
@@ -29,14 +29,13 @@ export async function createSchedule(formData: FormData) {
 
 export async function updateSchedule(id: string, formData: FormData) {
   const hari = String(formData.get("hari") ?? "").trim();
-  const jam = String(formData.get("jam") ?? "").trim();
-  const mapel = String(formData.get("mapel") ?? "").trim();
+  const jam = String(formData.get("jam") ?? "").trim() || null;
+  const mapel = String(formData.get("mapel") ?? "").trim() || null;
   const guru_id = String(formData.get("guru_id") ?? "").trim() || null;
   const kelas_id = String(formData.get("kelas_id") ?? "").trim() || null;
 
   if (!HARI_VALID.includes(hari)) throw new Error("Hari tidak valid.");
-  if (!jam) throw new Error("Jam wajib diisi, contoh: 16.00 - 16.45");
-  if (!mapel) throw new Error("Mata pelajaran wajib diisi.");
+  // Jam, mata pelajaran, guru, dan kelas semuanya opsional (boleh kosong).
 
   const supabase = getSupabaseServer();
   const { error } = await supabase

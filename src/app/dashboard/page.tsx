@@ -54,23 +54,24 @@ export default async function DashboardPage({
           <div className="bg-white rounded-xl2 border border-madin-line p-5">
             <h2 className="font-display font-semibold text-madin-navy mb-4">Jadwal Terdekat</h2>
             <ul className="space-y-3">
-              {schedule.slice(0, 5).map((s) => (
-                <li
-                  key={s.id}
-                  className="flex items-center justify-between text-sm border-b border-madin-line last:border-0 pb-3 last:pb-0"
-                >
-                  <div>
-                    <p className="font-medium text-madin-navy">{s.mapel}</p>
-                    <p className="text-xs text-black/50">
-                      {s.kelas} · {s.guru}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs font-medium text-madin-teal">{s.hari}</p>
-                    <p className="text-[11px] text-black/40">{s.jam}</p>
-                  </div>
-                </li>
-              ))}
+              {schedule.slice(0, 5).map((s) => {
+                const detail = [s.kelas, s.guru].filter(Boolean).join(" · ");
+                return (
+                  <li
+                    key={s.id}
+                    className="flex items-center justify-between text-sm border-b border-madin-line last:border-0 pb-3 last:pb-0"
+                  >
+                    <div>
+                      <p className="font-medium text-madin-navy">{s.mapel || s.hari}</p>
+                      {detail && <p className="text-xs text-black/50">{detail}</p>}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs font-medium text-madin-teal">{s.hari}</p>
+                      {s.jam && <p className="text-[11px] text-black/40">{s.jam}</p>}
+                    </div>
+                  </li>
+                );
+              })}
               {schedule.length === 0 && (
                 <p className="text-sm text-black/40">Belum ada jadwal.</p>
               )}

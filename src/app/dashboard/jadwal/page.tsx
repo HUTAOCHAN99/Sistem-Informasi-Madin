@@ -31,28 +31,31 @@ export default async function JadwalPage({
 
   const columns: Column<ScheduleItem>[] = [
     { key: "hari", header: "Hari" },
-    { key: "jam", header: "Jam" },
-    { key: "mapel", header: "Mata Pelajaran" },
-    { key: "guru", header: "Guru" },
-    { key: "kelas", header: "Kelas" },
+    { key: "jam", header: "Jam", render: (row) => row.jam || "-" },
+    { key: "mapel", header: "Mata Pelajaran", render: (row) => row.mapel || "-" },
+    { key: "guru", header: "Guru", render: (row) => row.guru || "-" },
+    { key: "kelas", header: "Kelas", render: (row) => row.kelas || "-" },
     {
       key: "id",
       header: "Aksi",
-      render: (row) => (
-        <div className="flex items-center gap-1">
-          <EditModal title={`Edit Jadwal: ${row.mapel}`}>
-            <EditScheduleForm
-              item={row}
-              teacherOptions={teacherOptions}
-              classOptions={classOptions}
+      render: (row) => {
+        const label = row.mapel || row.hari;
+        return (
+          <div className="flex items-center gap-1">
+            <EditModal title={`Edit Jadwal: ${label}`}>
+              <EditScheduleForm
+                item={row}
+                teacherOptions={teacherOptions}
+                classOptions={classOptions}
+              />
+            </EditModal>
+            <DeleteButton
+              action={deleteSchedule.bind(null, row.id)}
+              confirmText={`Hapus jadwal "${label}" (${row.hari}${row.jam ? `, ${row.jam}` : ""})?`}
             />
-          </EditModal>
-          <DeleteButton
-            action={deleteSchedule.bind(null, row.id)}
-            confirmText={`Hapus jadwal "${row.mapel}" (${row.hari}, ${row.jam})?`}
-          />
-        </div>
-      ),
+          </div>
+        );
+      },
     },
   ];
 

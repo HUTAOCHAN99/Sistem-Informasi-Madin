@@ -103,30 +103,58 @@ export default function Schedule({ schedule }: { schedule: ScheduleItem[] }) {
                     </span>
                   </div>
 
-                  {/* Daftar jadwal dalam hari tsb */}
+                  {/* Daftar jadwal dalam hari tsb. Jam, mapel, guru, dan kelas
+                      semuanya opsional -- kolom yang kosong tidak ditampilkan
+                      sama sekali (bukan ditampilkan kosong/placeholder). */}
                   <div className="divide-y divide-madin-line">
-                    {day.items.map((s) => (
-                      <div key={s.id} className="px-5 py-4">
-                        <div className="flex items-center gap-1.5 text-madin-orange text-xs font-semibold">
-                          <Clock className="w-3.5 h-3.5 shrink-0" />
-                          <span>{s.jam}</span>
+                    {day.items.map((s) => {
+                      const hasJam = s.jam.trim() !== "";
+                      const hasMapel = s.mapel.trim() !== "";
+                      const hasKelas = s.kelas.trim() !== "";
+                      const hasGuru = s.guru.trim() !== "";
+                      const hasDetail = hasKelas || hasGuru;
+
+                      return (
+                        <div key={s.id} className="px-5 py-4">
+                          {hasJam && (
+                            <div className="flex items-center gap-1.5 text-madin-orange text-xs font-semibold">
+                              <Clock className="w-3.5 h-3.5 shrink-0" />
+                              <span>{s.jam}</span>
+                            </div>
+                          )}
+                          {hasMapel && (
+                            <p
+                              className={`font-semibold text-madin-navy text-sm flex items-center gap-1.5 ${
+                                hasJam ? "mt-1.5" : ""
+                              }`}
+                            >
+                              <BookOpen className="w-3.5 h-3.5 text-madin-teal shrink-0" />
+                              {s.mapel}
+                            </p>
+                          )}
+                          {hasDetail && (
+                            <div
+                              className={`flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-black/60 ${
+                                hasJam || hasMapel ? "mt-2" : ""
+                              }`}
+                            >
+                              {hasKelas && (
+                                <span className="flex items-center gap-1.5">
+                                  <Users className="w-3.5 h-3.5 shrink-0" />
+                                  {s.kelas}
+                                </span>
+                              )}
+                              {hasGuru && (
+                                <span className="flex items-center gap-1.5">
+                                  <GraduationCap className="w-3.5 h-3.5 shrink-0" />
+                                  {s.guru}
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </div>
-                        <p className="mt-1.5 font-semibold text-madin-navy text-sm flex items-center gap-1.5">
-                          <BookOpen className="w-3.5 h-3.5 text-madin-teal shrink-0" />
-                          {s.mapel}
-                        </p>
-                        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-black/60">
-                          <span className="flex items-center gap-1.5">
-                            <Users className="w-3.5 h-3.5 shrink-0" />
-                            {s.kelas}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <GraduationCap className="w-3.5 h-3.5 shrink-0" />
-                            {s.guru}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               ))}

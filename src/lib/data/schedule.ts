@@ -5,8 +5,8 @@ import type { ScheduleItem, Hari } from "@/lib/types";
 type ScheduleRowFromDb = {
   id: string;
   hari: Hari;
-  jam: string;
-  mapel: string;
+  jam: string | null;
+  mapel: string | null;
   guru_id: string | null;
   kelas_id: string | null;
   teachers: { nama: string } | null;
@@ -24,15 +24,19 @@ export async function getSchedule(): Promise<ScheduleItem[]> {
 
   if (error) throw new Error(`Gagal memuat jadwal: ${error.message}`);
 
+  // Jam, mapel, guru, dan kelas semuanya opsional. Field yang kosong dipetakan
+  // ke string kosong ("") -- bukan "-" -- supaya konsumen data (landing page,
+  // dashboard) bisa membedakan "kosong/tidak diisi" dari nilai literal, lalu
+  // memilih sendiri mau disembunyikan atau diberi placeholder.
   const rows = ((data ?? []) as unknown as ScheduleRowFromDb[]).map((s) => ({
     id: s.id,
     hari: s.hari,
-    jam: s.jam,
-    mapel: s.mapel,
+    jam: s.jam ?? "",
+    mapel: s.mapel ?? "",
     guru_id: s.guru_id,
-    guru: s.teachers?.nama ?? "-",
+    guru: s.teachers?.nama ?? "",
     kelas_id: s.kelas_id,
-    kelas: s.classes?.nama_kelas ?? "-",
+    kelas: s.classes?.nama_kelas ?? "",
   }));
 
   return rows.sort((a, b) => HARI_ORDER.indexOf(a.hari) - HARI_ORDER.indexOf(b.hari));

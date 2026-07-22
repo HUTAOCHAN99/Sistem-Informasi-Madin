@@ -50,15 +50,25 @@ export default function EditScheduleForm({
         </select>
       </div>
       <div>
-        <label className={label}>Jam</label>
-        <input name="jam" required defaultValue={item.jam} className={input} />
+        <label className={label}>Jam (opsional)</label>
+        <input
+          name="jam"
+          placeholder="16.00 - 16.45"
+          defaultValue={item.jam}
+          className={input}
+        />
       </div>
       <div>
-        <label className={label}>Mata Pelajaran</label>
-        <input name="mapel" required defaultValue={item.mapel} className={input} />
+        <label className={label}>Mata Pelajaran (opsional)</label>
+        <input
+          name="mapel"
+          placeholder="Fiqih"
+          defaultValue={item.mapel}
+          className={input}
+        />
       </div>
       <div>
-        <label className={label}>Guru</label>
+        <label className={label}>Guru (opsional)</label>
         <select name="guru_id" defaultValue={item.guru_id ?? ""} className={input}>
           <option value="">Belum ditentukan</option>
           {teacherOptions.map((t) => (
@@ -69,7 +79,7 @@ export default function EditScheduleForm({
         </select>
       </div>
       <div>
-        <label className={label}>Kelas</label>
+        <label className={label}>Kelas (opsional)</label>
         <select name="kelas_id" defaultValue={item.kelas_id ?? ""} className={input}>
           <option value="">Belum ditentukan</option>
           {classOptions.map((c) => (
