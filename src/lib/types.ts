@@ -114,6 +114,22 @@ export type DashboardStats = {
   jadwalHariIni: number;
 };
 
+/**
+ * Statistik ringkas untuk kartu di section Hero (landing page), dihitung
+ * dari data asli, bukan hardcode:
+ * - jumlahJenjang: jumlah jenjang (Awaliyah/Wustha/Ulya) yang punya minimal
+ *   1 kelas di tabel `classes`.
+ * - jumlahMapel: jumlah mata pelajaran unik yang sudah diinput di jadwal
+ *   (`schedule.mapel`).
+ * - jumlahHariBelajar: jumlah hari unik dalam seminggu yang punya jadwal
+ *   (`schedule.hari`), dari Senin s.d. Minggu.
+ */
+export type HeroStats = {
+  jumlahJenjang: number;
+  jumlahMapel: number;
+  jumlahHariBelajar: number;
+};
+
 /** Untuk dropdown pilihan di form (mis. pilih guru / pilih kelas). */
 export type SelectOption = { id: string; label: string };
 

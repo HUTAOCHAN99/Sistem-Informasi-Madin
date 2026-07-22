@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BookOpen, Sparkles, ZoomIn } from "lucide-react";
 import ImageLightbox from "./ImageLightbox";
+import type { HeroStats } from "@/lib/types";
 
 const HERO_SRC_DEFAULT = "/hero/madrasah.jpg";
 const HERO_ALT = "Suasana Madrasah Diniyah";
@@ -57,8 +58,23 @@ function HeroPhoto({ src }: { src: string }) {
   );
 }
 
-export default function Hero({ heroImageUrl }: { heroImageUrl?: string | null } = {}) {
+export default function Hero({
+  heroImageUrl,
+  stats,
+}: {
+  heroImageUrl?: string | null;
+  // Statistik dihitung dari database (lihat getHeroStats di
+  // lib/data/stats.ts): jumlah jenjang yang punya kelas, jumlah mata
+  // pelajaran unik di jadwal, dan jumlah hari belajar unik dalam seminggu.
+  // Kalau belum ada data sama sekali, tampilkan 0, bukan angka bohongan.
+  stats?: HeroStats;
+} = {}) {
   const heroSrc = heroImageUrl || HERO_SRC_DEFAULT;
+  const heroStats: HeroStats = stats ?? {
+    jumlahJenjang: 0,
+    jumlahMapel: 0,
+    jumlahHariBelajar: 0,
+  };
   return (
     <section id="top" className="relative bg-madin-navy pt-32 pb-24 overflow-hidden">
       {/* Geometric motif watermark */}
@@ -129,15 +145,21 @@ export default function Hero({ heroImageUrl }: { heroImageUrl?: string | null } 
               <div className="h-px bg-white/10 my-6" />
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <p className="font-display font-bold text-white text-2xl">3</p>
+                  <p className="font-display font-bold text-white text-2xl">
+                    {heroStats.jumlahJenjang}
+                  </p>
                   <p className="text-white/50 text-xs mt-1">Jenjang</p>
                 </div>
                 <div>
-                  <p className="font-display font-bold text-white text-2xl">5</p>
+                  <p className="font-display font-bold text-white text-2xl">
+                    {heroStats.jumlahMapel}
+                  </p>
                   <p className="text-white/50 text-xs mt-1">Mata Pelajaran</p>
                 </div>
                 <div>
-                  <p className="font-display font-bold text-white text-2xl">6</p>
+                  <p className="font-display font-bold text-white text-2xl">
+                    {heroStats.jumlahHariBelajar}
+                  </p>
                   <p className="text-white/50 text-xs mt-1">Hari Belajar</p>
                 </div>
               </div>

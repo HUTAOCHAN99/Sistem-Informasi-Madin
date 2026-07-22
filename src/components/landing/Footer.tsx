@@ -45,7 +45,7 @@ export default function Footer() {
               <div className="mt-4">
                 <div className="mt-3 flex items-center gap-4">
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/nurul_huda_kebondalem?igsh=MWRsNXY3bmN3bmh2ZA%3D%3D&utm_source=qr"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/60 transition hover:text-pink-500"
@@ -70,6 +70,7 @@ export default function Footer() {
                   >
                     <Youtube size={22} />
                   </a> */}
+                  
                 </div>
               </div>
             </div>

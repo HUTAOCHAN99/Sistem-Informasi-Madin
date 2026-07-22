@@ -13,7 +13,7 @@ import Teachers from "@/components/landing/Teachers";
 import Location from "@/components/landing/Location";
 import Footer from "@/components/landing/Footer";
 import FadeInSection from "@/components/landing/FadeInSection";
-import { getDashboardStats } from "@/lib/data/stats";
+import { getDashboardStats, getHeroStats } from "@/lib/data/stats";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { getSchedule } from "@/lib/data/schedule";
 import { getTeachers } from "@/lib/data/teachers";
@@ -28,6 +28,7 @@ async function safeLoad() {
   if (!isSupabaseConfigured()) {
     return {
       stats: { totalGuru: 0, totalSantri: 0, totalKelas: 0, pengumumanAktif: 0, jadwalHariIni: 0 },
+      heroStats: { jumlahJenjang: 0, jumlahMapel: 0, jumlahHariBelajar: 0 },
       announcements: [],
       schedule: [],
       teachers: [],
@@ -36,26 +37,29 @@ async function safeLoad() {
     };
   }
 
-  const [stats, announcements, schedule, teachers, gallery, settings] = await Promise.all([
-    getDashboardStats(),
-    getAnnouncements(),
-    getSchedule(),
-    getTeachers(),
-    getGalleryItems(),
-    getSiteSettings(),
-  ]);
+  const [stats, heroStats, announcements, schedule, teachers, gallery, settings] =
+    await Promise.all([
+      getDashboardStats(),
+      getHeroStats(),
+      getAnnouncements(),
+      getSchedule(),
+      getTeachers(),
+      getGalleryItems(),
+      getSiteSettings(),
+    ]);
 
-  return { stats, announcements, schedule, teachers, gallery, settings };
+  return { stats, heroStats, announcements, schedule, teachers, gallery, settings };
 }
 
 export default async function Home() {
-  const { stats, announcements, schedule, teachers, gallery, settings } = await safeLoad();
+  const { stats, heroStats, announcements, schedule, teachers, gallery, settings } =
+    await safeLoad();
 
   return (
     <main className="min-h-screen">
       <Navbar />
       <FadeInSection>
-        <Hero heroImageUrl={settings.hero_image_url} />
+        <Hero heroImageUrl={settings.hero_image_url} stats={heroStats} />
       </FadeInSection>
       <FadeInSection>
         <About aboutImageUrl={settings.about_image_url} />
